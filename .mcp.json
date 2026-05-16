@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "supabase": {
+      "type": "http",
+      "url": "https://mcp.supabase.com/mcp?project_ref=rwnwafrqwrfpsmumkrmd"
+    },
+    "n8n-mcp": {
+      "type": "http",
+      "url": "https://n8n.serey.io/mcp-server/http",
+      "headers": {
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZWI2ZmNlZC01ZGI1LTQ4OGYtYjYyOS0yOWFlZWRjM2MzNWQiLCJpc3MiOiJuOG4iLCJhdWQiOiJtY3Atc2VydmVyLWFwaSIsImp0aSI6IjczNGQ5ZjY4LTM4YTEtNDAxNC1hY2I2LTQ5YWM4YjVmMGY5MCIsImlhdCI6MTc3ODg1OTk4N30.h6GKASSFdaOW3ocB_FceXsYDce_IZ_-XfrhEnxx1MDk"
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(claude mcp *)",
+      "mcp__supabase__get_project_url",
+      "PowerShell(Get-ChildItem -Path \"c:\\\\Users\\\\LayPl\\\\Documents\\\\design-to-code-studio\\\\app\" -Recurse -Directory | Where-Object { $_.Name -in @\\('Events', 'Jobs', 'Commands', 'Listeners'\\) })"
+    ]
+  },
+  "enabledMcpjsonServers": [
+    "supabase",
+    "n8n-mcp"
+  ]
+}

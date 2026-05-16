@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Community Showcase | FigCo</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@600;700;800&amp;family=Inter:wght@400&amp;family=Space+Grotesk:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-surface-variant": "#424754",
+                      "on-primary": "#ffffff",
+                      "primary-fixed-dim": "#adc6ff",
+                      "on-tertiary-container": "#fbfdff",
+                      "on-primary-fixed-variant": "#004395",
+                      "outline": "#727785",
+                      "tertiary-fixed-dim": "#bfc8ce",
+                      "on-background": "#111c2d",
+                      "on-error-container": "#93000a",
+                      "on-primary-container": "#fefcff",
+                      "on-secondary": "#ffffff",
+                      "primary-fixed": "#d8e2ff",
+                      "primary-container": "#2170e4",
+                      "surface-tint": "#005ac2",
+                      "surface-container": "#e7eeff",
+                      "secondary-fixed": "#d3e5f1",
+                      "inverse-on-surface": "#ecf1ff",
+                      "on-tertiary-fixed-variant": "#3f484d",
+                      "on-error": "#ffffff",
+                      "on-tertiary-fixed": "#141d21",
+                      "on-surface": "#111c2d",
+                      "tertiary": "#545d62",
+                      "surface-container-highest": "#d8e3fb",
+                      "surface-container-high": "#dee8ff",
+                      "on-secondary-container": "#566771",
+                      "on-secondary-fixed-variant": "#384953",
+                      "secondary-fixed-dim": "#b7c9d5",
+                      "error-container": "#ffdad6",
+                      "surface-bright": "#f9f9ff",
+                      "tertiary-fixed": "#dbe4ea",
+                      "primary": "#0058be",
+                      "surface-variant": "#d8e3fb",
+                      "surface-container-low": "#f0f3ff",
+                      "on-secondary-fixed": "#0c1e26",
+                      "inverse-primary": "#adc6ff",
+                      "on-primary-fixed": "#001a42",
+                      "inverse-surface": "#263143",
+                      "on-tertiary": "#ffffff",
+                      "error": "#ba1a1a",
+                      "secondary-container": "#d3e5f1",
+                      "background": "#f9f9ff",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary-container": "#6d767b",
+                      "secondary": "#50616b",
+                      "surface": "#f9f9ff",
+                      "outline-variant": "#c2c6d6",
+                      "surface-dim": "#cfdaf2"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "pixel-unit": "4px",
+                      "stack-lg": "32px",
+                      "gutter": "20px",
+                      "stack-sm": "8px",
+                      "stack-md": "16px",
+                      "container-padding": "24px"
+              },
+              "fontFamily": {
+                      "headline-xl": ["Epilogue"],
+                      "body-md": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "technical-xs": ["Space Grotesk"],
+                      "technical-sm": ["Space Grotesk"],
+                      "headline-lg": ["Epilogue"],
+                      "headline-md": ["Epilogue"]
+              },
+              "fontSize": {
+                      "headline-xl": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }],
+                      "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                      "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                      "technical-xs": ["12px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                      "technical-sm": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                      "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                      "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+          font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        .sketch-border {
+            border: 2px solid #111c2d;
+            border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+        }
+        
+        .sketch-border-thick {
+            border: 4px solid #111c2d;
+            border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+        }
+        
+        .pixel-shadow {
+            box-shadow: 4px 4px 0px 0px #111c2d;
+        }
+        
+        .pixel-shadow-lg {
+            box-shadow: 8px 8px 0px 0px #111c2d;
+        }
+        
+        .pixel-shadow-hover:hover {
+            transform: translate(-4px, -4px);
+            box-shadow: 8px 8px 0px 0px #111c2d;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-press:active {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px 0px #111c2d;
+        }
+        
+        /* Masonry Grid CSS */
+        .masonry {
+            column-count: 1;
+            column-gap: 20px;
+        }
+        @media (min-width: 768px) {
+            .masonry { column-count: 2; }
+        }
+        @media (min-width: 1024px) {
+            .masonry { column-count: 3; }
+        }
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-primary selection:text-on-primary">
+<!-- TopNavBar (Shared Component) -->
+<nav class="bg-white dark:bg-slate-900 w-full border-b-4 border-slate-900 dark:border-slate-100 shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] flex justify-between items-center px-8 py-4 sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tighter">
+                FigCo
+            </div>
+<div class="hidden md:flex gap-6 font-['Epilogue'] font-bold tracking-tight">
+<a class="text-slate-900 dark:text-slate-300 hover:-translate-y-1 hover:translate-x-1 transition-transform active:translate-y-1 active:translate-x-1" href="#">Pricing</a>
+<a class="text-slate-900 dark:text-slate-300 hover:-translate-y-1 hover:translate-x-1 transition-transform active:translate-y-1 active:translate-x-1" href="#">Docs</a>
+<a class="text-slate-900 dark:text-slate-300 hover:-translate-y-1 hover:translate-x-1 transition-transform active:translate-y-1 active:translate-x-1" href="#">Community</a>
+<a class="text-blue-600 dark:text-blue-400 underline decoration-4 underline-offset-8 hover:-translate-y-1 hover:translate-x-1 transition-transform active:translate-y-1 active:translate-x-1" href="#">Showcase</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="bg-primary text-on-primary font-technical-sm px-6 py-2 sketch-border pixel-shadow hover:-translate-y-1 hover:translate-x-1 transition-transform active:translate-y-1 active:translate-x-1 btn-press">
+                Get Started
+            </button>
+<button aria-label="terminal" class="w-10 h-10 flex items-center justify-center sketch-border bg-white pixel-shadow hover:-translate-y-1 hover:translate-x-1 transition-transform active:translate-y-1 active:translate-x-1 btn-press">
+<span class="material-symbols-outlined text-slate-900">terminal</span>
+</button>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="max-w-7xl mx-auto px-gutter py-stack-lg">
+<!-- Hero Section -->
+<section class="mb-stack-lg bg-surface-container-high sketch-border-thick pixel-shadow-lg p-stack-lg md:p-[64px] flex flex-col md:flex-row items-center gap-stack-lg relative overflow-hidden">
+<div class="flex-1 z-10 relative">
+<div class="inline-block bg-primary-container text-on-primary-container font-technical-xs px-2 py-1 sketch-border mb-4">
+                    COMMUNITY SHOWCASE
+                </div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface mb-stack-sm">
+                    Built by the <br/> FigCo Collective.
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-lg mb-stack-md">
+                    Explore, remix, and deploy hundreds of hand-crafted components built by our global community of sketch-tech developers.
+                </p>
+<div class="flex flex-wrap gap-4 mt-stack-md">
+<button class="bg-primary text-on-primary font-technical-sm px-8 py-3 sketch-border pixel-shadow-hover btn-press flex items-center gap-2">
+<span class="material-symbols-outlined text-on-primary" style="font-variation-settings: 'FILL' 1;">add</span>
+                        Submit Component
+                    </button>
+<button class="bg-surface text-on-surface font-technical-sm px-8 py-3 sketch-border pixel-shadow-hover btn-press flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface">code</span>
+                        View Guidelines
+                    </button>
+</div>
+</div>
+<div class="flex-1 w-full md:w-auto relative flex justify-center z-10">
+<div class="relative w-full max-w-md aspect-square bg-white sketch-border-thick pixel-shadow p-4 transform rotate-2">
+<!-- Placeholder for hand-drawn illustration -->
+<div class="w-full h-full bg-surface-container flex items-center justify-center sketch-border border-dashed relative overflow-hidden">
+<img alt="Developers collaborating" class="absolute inset-0 w-full h-full object-cover mix-blend-luminosity opacity-80" data-alt="A hand-drawn, sketch-style illustration of two developers collaborating at a desk, surrounded by floating geometric shapes and lines of code. The style is brutalist and minimalist, using only deep slate black, bright primary blue, and stark white. The drawing feels like a rough blueprint or doodle from a technical notebook, energetic and creative. High contrast, clean lines, no shading." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGWGoYsc4AKiMXmimZy9IqRyLxqbyWekaaz2b2M3ChjErP7SCoOidld6yzrWb0jMw1NLQ_GVIdgFfasQEwA1CHxywdNVzlpWEzDnbzuYdlv4XqOQaFvNIcxGy1wNSr1K-ZL6hdRzJJIXNwMYtmKg4epZpwXqGZMEBsgU8-IisxQupc_BL-9p6LAoeYJdgwgevpsJ0DuoZtb65EHqp2zdDq8GDDrffscXKSquo9rOOwnfroDUgQ8z2GNuchY1D9g_-wS4DnOW6JpOe8"/>
+<div class="absolute inset-0 bg-primary/20 mix-blend-overlay"></div>
+</div>
+<!-- Decorative elements -->
+<div class="absolute -top-4 -right-4 bg-[#ffdad6] text-[#93000a] font-technical-xs px-2 py-1 sketch-border transform rotate-12 pixel-shadow">
+                        v2.0 LIVE!
+                    </div>
+</div>
+</div>
+<!-- Abstract background shapes -->
+<div class="absolute top-0 right-0 w-64 h-64 border-4 border-slate-200 rounded-full transform translate-x-1/2 -translate-y-1/2 z-0"></div>
+<div class="absolute bottom-0 left-0 w-32 h-32 bg-primary-fixed-dim sketch-border transform -translate-x-1/2 translate-y-1/2 z-0"></div>
+</section>
+<!-- Filters / Search -->
+<section class="mb-stack-lg flex flex-col md:flex-row justify-between items-center gap-stack-md">
+<div class="flex flex-wrap gap-2">
+<button class="bg-primary text-on-primary font-technical-xs px-4 py-2 sketch-border pixel-shadow btn-press">All Components</button>
+<button class="bg-white text-on-surface font-technical-xs px-4 py-2 sketch-border hover:bg-surface-variant transition-colors">Navbars</button>
+<button class="bg-white text-on-surface font-technical-xs px-4 py-2 sketch-border hover:bg-surface-variant transition-colors">Hero Sections</button>
+<button class="bg-white text-on-surface font-technical-xs px-4 py-2 sketch-border hover:bg-surface-variant transition-colors">Data Display</button>
+<button class="bg-white text-on-surface font-technical-xs px-4 py-2 sketch-border hover:bg-surface-variant transition-colors">Forms</button>
+</div>
+<div class="relative w-full md:w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 transform -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-white font-technical-sm text-on-surface placeholder:text-outline border-2 border-on-surface rounded-none pl-10 pr-4 py-2 focus:border-primary focus:ring-0 focus:outline-none pixel-shadow" placeholder="Search components..." type="text"/>
+</div>
+</section>
+<!-- Masonry Grid -->
+<section class="masonry">
+<!-- Card 1 -->
+<div class="masonry-item bg-white sketch-border pixel-shadow p-stack-sm flex flex-col hover:border-primary group transition-colors duration-300">
+<div class="w-full aspect-[4/3] bg-surface-container relative sketch-border overflow-hidden mb-stack-sm p-2 flex items-center justify-center">
+<img alt="Component Preview" class="w-full h-full object-cover filter grayscale contrast-125 block" data-alt="A macro shot of a computer screen displaying HTML and CSS code in a dark theme editor. The image is stylized to look highly pixelated, like an 8-bit retro video game graphic. The dominant colors are stark black, white, and a vibrant terminal green, creating a stark, technical brutalist aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXV0N4uVRGTSzxorKqTi5IhNW8O9CE7nwV4jeu8UUhdS4e43_dY7eUIeqAKcggz4BKMdKGYhB3TQxEHK9vtAEiAzqM2IScItHsiQCaVpRd9ANC-E39k01kJhY4xBV-MCBZ0cAf7x26cVECNWFXZgssLgY9CF1dAOMs1CedwBCRh6hUodEYn0Mf1KSQCz06pAY1DQ4bTMLxakOE7Y-HzkC3g9_MQqN8w2_JFhunen8ausFIKXxWQEnX5rBkoZhuxmRNxYjPbjbuKmbw"/>
+<div class="absolute top-2 right-2 flex gap-1">
+<span class="w-2 h-2 bg-on-surface rounded-full"></span>
+<span class="w-2 h-2 bg-on-surface rounded-full"></span>
+<span class="w-2 h-2 bg-on-surface rounded-full"></span>
+</div>
+</div>
+<div class="p-2 flex-1 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">Mega Menu Dropdown</h3>
+<div class="flex items-center gap-1 text-on-surface-variant font-technical-xs">
+<span class="material-symbols-outlined text-[16px] text-[#ba1a1a]" style="font-variation-settings: 'FILL' 1;">favorite</span>
+                                342
+                            </div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-stack-sm line-clamp-2">A fully responsive, accessible mega menu built with standard Tailwind utility classes and zero JS dependencies.</p>
+</div>
+<div class="flex items-center justify-between mt-auto pt-4 border-t-2 border-dashed border-outline-variant">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 bg-secondary-container sketch-border flex items-center justify-center font-technical-xs text-on-secondary-container">AL</div>
+<span class="font-technical-sm text-on-surface-variant">@alovelace</span>
+</div>
+<button class="bg-white text-on-surface border-2 border-on-surface font-technical-xs px-3 py-1 hover:bg-surface-variant flex items-center gap-1 transition-colors btn-press">
+<span class="material-symbols-outlined text-[14px]">integration_instructions</span>
+                            Remix
+                        </button>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="masonry-item bg-surface-bright sketch-border pixel-shadow p-stack-sm flex flex-col hover:border-primary group transition-colors duration-300">
+<div class="w-full aspect-[16/9] bg-primary-fixed-dim relative sketch-border overflow-hidden mb-stack-sm p-4 flex items-center justify-center">
+<img alt="Component Preview" class="w-full h-full object-cover filter contrast-150 saturate-0 block mix-blend-multiply" data-alt="A visual representation of data analytics, showing a bar chart and a line graph on a monitor. The visual style is heavily simplified and abstract, resembling a blueprint or a wireframe doodle. The color palette is restricted to a stark white background with deep navy blue lines and light sky blue fills. High contrast, brutalist presentation." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBe8VtHzqmwix_sksqUqhjofGpUDBUVo2Kqplc7ed9PQ0v9ZWM_S4WPLRoq9kqiljFwjOzdriFc2qv1CXRhoeA6_TJOmmYdiVKlePXQIcO81DO5M64UlreU43URzJt-nCc_4wZM_O2I-S2O2R0kbKQ-Qz4e32CiZkiEnw_rsSAN88jeCqsutcDSQ1U-Np6s2Ag4sziQl0kUWNXqboqoqciTIFynMe-8UvIhSl9wlmfOMcIKgVJJlIyLjbDRVAjF1FEdw5TWS5m2MWYd"/>
+<div class="absolute inset-0 border-[8px] border-white mix-blend-overlay"></div>
+</div>
+<div class="p-2 flex-1 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-md text-headline-md text-on-surface group-hover:text-primary transition-colors">Bento Stat Grid</h3>
+<div class="flex items-center gap-1 text-on-surface-variant font-technical-xs">
+<span class="material-symbols-outlined text-[16px]">favorite</span>
+                                128
+                            </div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-stack-sm line-clamp-2">Asymmetric grid layout for displaying key metrics, utilizing CSS grid and the 'wobbly' border aesthetic.</p>
+<div class="flex gap-1 mb-4">
+<span class="bg-surface-container text-on-surface font-technical-xs px-2 py-[2px] border border-on-surface text-[10px]">Grid</span>
+<span class="bg-surface-container text-on-surface font-technical-xs px-2 py-[2px] border border-on-surface text-[10px]">Dashboard</span>
+</div>
+</div>
+<div class="flex items-center justify-between mt-auto pt-4 border-t-2 border-dashed border-outline-variant">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 bg-primary-container text-on-primary-container sketch-border flex items-center justify-center font-technical-xs">TB</div>
+<span class="font-technical-sm text-on-surface-variant">@tberners</span>
+</div>
+<button class="bg-primary text-on-primary border-2 border-on-surface font-technical-xs px-3 py-1 hover:bg-surface-tint flex items-center gap-1 transition-colors btn-press pixel-shadow">
+<span class="material-symbols-outlined text-[14px]">integration_instructions</span>
+                            Remix
+                        </button>
+</div>
+</div>
+</div>
+<!-- Add more masonry items as needed to demonstrate layout... -->
+</section>
+</main>
+<!-- Footer (Shared Component) -->
+<footer class="bg-slate-900 dark:bg-black w-full border-t-8 border-slate-800 flex flex-col md:flex-row justify-between items-center px-12 py-10 gap-8 mt-stack-lg">
+<div class="text-xl font-black text-white">
+            FigCo
+        </div>
+<div class="flex flex-wrap gap-6 justify-center">
+<a class="font-['Epilogue'] text-xs uppercase tracking-widest text-slate-400 hover:text-blue-400 underline decoration-2 underline-offset-4 cursor-pointer transition-colors" href="#">Github</a>
+<a class="font-['Epilogue'] text-xs uppercase tracking-widest text-slate-400 hover:text-blue-400 underline decoration-2 underline-offset-4 cursor-pointer transition-colors" href="#">Discord</a>
+<a class="font-['Epilogue'] text-xs uppercase tracking-widest text-slate-400 hover:text-blue-400 underline decoration-2 underline-offset-4 cursor-pointer transition-colors" href="#">Status</a>
+<a class="font-['Epilogue'] text-xs uppercase tracking-widest text-slate-400 hover:text-blue-400 underline decoration-2 underline-offset-4 cursor-pointer transition-colors" href="#">Privacy</a>
+</div>
+<div class="font-['Epilogue'] text-xs uppercase tracking-widest text-slate-400">
+            © 2024 FigCo. Built line-by-line.
+        </div>
+</footer>
+</body></html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FigCo - Dashboard &amp; Project Overview</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&amp;family=Epilogue:wght@600;700;800&amp;family=Inter:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#424754",
+                        "surface-container-low": "#f0f3ff",
+                        "surface-container-high": "#dee8ff",
+                        "on-tertiary-container": "#fbfdff",
+                        "tertiary-fixed-dim": "#bfc8ce",
+                        "tertiary": "#545d62",
+                        "tertiary-fixed": "#dbe4ea",
+                        "on-error-container": "#93000a",
+                        "surface-container-highest": "#d8e3fb",
+                        "on-tertiary-fixed": "#141d21",
+                        "primary-fixed-dim": "#adc6ff",
+                        "surface-variant": "#d8e3fb",
+                        "on-background": "#111c2d",
+                        "primary-fixed": "#d8e2ff",
+                        "inverse-on-surface": "#ecf1ff",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-surface": "#263143",
+                        "surface-tint": "#005ac2",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed": "#d3e5f1",
+                        "outline": "#727785",
+                        "on-primary-fixed-variant": "#004395",
+                        "surface-bright": "#f9f9ff",
+                        "on-error": "#ffffff",
+                        "surface": "#f9f9ff",
+                        "outline-variant": "#c2c6d6",
+                        "on-tertiary": "#ffffff",
+                        "surface-dim": "#cfdaf2",
+                        "on-secondary-fixed-variant": "#384953",
+                        "tertiary-container": "#6d767b",
+                        "background": "#f9f9ff",
+                        "primary": "#0058be",
+                        "on-surface": "#111c2d",
+                        "error": "#ba1a1a",
+                        "primary-container": "#2170e4",
+                        "secondary-container": "#d3e5f1",
+                        "on-secondary-fixed": "#0c1e26",
+                        "on-primary-container": "#fefcff",
+                        "on-tertiary-fixed-variant": "#3f484d",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed-dim": "#b7c9d5",
+                        "inverse-primary": "#adc6ff",
+                        "on-secondary-container": "#566771",
+                        "on-primary": "#ffffff",
+                        "on-primary-fixed": "#001a42",
+                        "secondary": "#50616b",
+                        "surface-container": "#e7eeff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "pixel-unit": "4px",
+                        "gutter": "20px",
+                        "container-padding": "24px",
+                        "stack-lg": "32px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Epilogue"],
+                        "technical-xs": ["Space Grotesk"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Epilogue"],
+                        "technical-sm": ["Space Grotesk"],
+                        "body-lg": ["Inter"],
+                        "headline-xl": ["Epilogue"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "technical-xs": ["12px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "technical-sm": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-xl": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .wobbly-border {
+            border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+            border: 2px solid #1E293B;
+        }
+        .pixel-shadow {
+            box-shadow: 4px 4px 0px 0px #1E293B;
+        }
+        .pixel-shadow-lg {
+            box-shadow: 8px 8px 0px 0px #1E293B;
+        }
+        .btn-hover:hover {
+            transform: translate(4px, 4px);
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex">
+<!-- SideNavBar -->
+<nav class="hidden md:flex bg-white border-r-4 border-slate-900 h-screen w-64 shadow-[8px_0px_0px_0px_rgba(30,41,59,1)] flex-col gap-4 p-6 fixed left-0 top-0 overflow-y-auto z-40">
+<div class="flex items-center gap-3 mb-8">
+<img alt="FigCo Logo Sketch" class="w-12 h-12 wobbly-border pixel-shadow object-cover" data-alt="A small, stylized logo icon representing a fictional company called FigCo. The logo is designed in a sketchy, hand-drawn doodle style mixed with rigid 8-bit geometric shapes. It features a simple blueprint-like structure in bold black lines against a clean white background, conveying a sense of playful technicality and raw creative process." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxe6LwinkHYxjw6Tg8r1XtNvfjtRODtT0taP2SeDEJ0k32esjCk4vLXmBXIbqSyiKz1PFkvMML_RoTAZjqt6Xl5C8Pc4JwlkZRl9tvK5Czrraapy3_rdh38g79PsmXpEpq4_Jq7dwHzfAkWSK4PBAUkDM7zoVjZ-U2AfCkQeUu0sgDYSnxH2WIBKjQ0AAb1QaEoZWayL6uCQgliuGyQmXh1j_25hi_r3Qy1LwIijQZdS5ou20t-M2TpdQyzbqp7-yHSK_qHcyPPZRQ"/>
+<div>
+<h1 class="text-lg font-black text-slate-900 font-headline-md text-headline-md tracking-tighter">FigCo App</h1>
+<p class="font-technical-xs text-technical-xs text-slate-500 uppercase tracking-widest">Blueprint Mode</p>
+</div>
+</div>
+<div class="flex-grow flex flex-col gap-2">
+<!-- Active Tab -->
+<a class="flex items-center gap-3 px-4 py-3 bg-blue-500 text-white border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] translate-x-[-2px] font-technical-sm text-technical-sm" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">folder_open</span>
+<span>Projects</span>
+</a>
+<!-- Inactive Tabs -->
+<a class="flex items-center gap-3 px-4 py-3 text-slate-700 border-2 border-transparent hover:border-slate-900 hover:translate-x-1 transition-all font-technical-sm text-technical-sm" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span>Component Library</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-700 border-2 border-transparent hover:border-slate-900 hover:translate-x-1 transition-all font-technical-sm text-technical-sm" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-700 border-2 border-transparent hover:border-slate-900 hover:translate-x-1 transition-all font-technical-sm text-technical-sm" href="#">
+<span class="material-symbols-outlined">key</span>
+<span>API Keys</span>
+</a>
+</div>
+<button class="mt-auto px-4 py-3 bg-white border-2 border-slate-900 pixel-shadow btn-hover transition-transform font-technical-xs text-technical-xs uppercase tracking-wider font-bold text-center">
+            New Project
+        </button>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-grow md:ml-64 p-8 relative">
+<!-- TopAppBar (Mobile & Utility) -->
+<header class="flex justify-between items-center mb-12">
+<div class="flex items-center gap-4">
+<h2 class="font-headline-xl text-headline-xl text-slate-900">Dashboard</h2>
+<div class="hidden lg:flex items-center gap-2 bg-surface-container-high px-3 py-1 border-2 border-slate-900 rounded-sm font-technical-xs text-technical-xs text-slate-700">
+<span class="w-2 h-2 bg-green-500 border border-slate-900 block"></span>
+                    System Online
+                </div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<input class="w-64 px-4 py-2 bg-white border-2 border-slate-900 font-technical-xs text-technical-xs focus:outline-none focus:border-blue-600 focus:shadow-[4px_4px_0px_0px_#005ac2] transition-shadow" placeholder="Search blueprints..." type="text"/>
+<span class="material-symbols-outlined absolute right-3 top-2 text-slate-500">search</span>
+</div>
+<div class="flex gap-2">
+<button class="w-10 h-10 flex items-center justify-center bg-white border-2 border-slate-900 pixel-shadow btn-hover transition-transform">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center bg-white border-2 border-slate-900 pixel-shadow btn-hover transition-transform">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+<img alt="Pixelated user avatar" class="w-10 h-10 border-2 border-slate-900 object-cover" data-alt="A square avatar image of a user, stylized to look like a retro 8-bit character mixed with a rough, hand-drawn sketch. The face is composed of blocky geometric shapes with thick black outlines, colored in bright, flat hues against a stark white background, fitting a quirky tech aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDg1ymuvh3LfEmIoXD2PXcudyWZyOAiibgfVMw0RyjTwdFCjzkl-cvGkOxncvU-LtYpwgb6E8EqrwX6UcX-FQ9ng03jdVl80w4WxF7vepSS5xN942m9Oxc8DyPkHYl5SygDCAwEeSpyW5YTHlcNH9A7GRckVGQBy1CNFnIUaS6pBWVBKMk3CZVagvCscHN6DIOBtsHTQ-6Z4TyaOrBdC6Ej8gQ5lkghY0nSzSD3kaFreb_0nYqSnU4RnDLm5l9m1ae1DbYRbF1bXmQ"/>
+</div>
+</header>
+<!-- Stats Bento Grid -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+<!-- Stat Card 1 -->
+<div class="bg-surface-container-low p-6 wobbly-border pixel-shadow-lg relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-16 h-16 bg-blue-100 border-l-2 border-b-2 border-slate-900 -mr-8 -mt-8 rotate-45 flex items-end justify-center pb-2">
+<span class="material-symbols-outlined text-blue-600 rotate-[-45deg] text-sm">trending_up</span>
+</div>
+<h3 class="font-technical-sm text-technical-sm text-slate-600 uppercase mb-2">Total Generations</h3>
+<p class="font-headline-lg text-headline-lg text-slate-900">1,024</p>
+<div class="mt-4 flex items-center gap-2 font-technical-xs text-technical-xs text-blue-600">
+<span class="px-2 py-1 bg-white border-2 border-slate-900">+12% this week</span>
+</div>
+</div>
+<!-- Stat Card 2 -->
+<div class="bg-surface p-6 border-2 border-slate-900 rounded-sm pixel-shadow relative">
+<h3 class="font-technical-sm text-technical-sm text-slate-600 uppercase mb-2">Active Projects</h3>
+<p class="font-headline-lg text-headline-lg text-slate-900">8</p>
+<div class="mt-4 w-full bg-slate-200 border-2 border-slate-900 h-4">
+<div class="bg-blue-500 h-full w-3/4 border-r-2 border-slate-900"></div>
+</div>
+<p class="mt-2 font-technical-xs text-technical-xs text-right text-slate-500">75% Capacity</p>
+</div>
+<!-- CTA Card -->
+<div class="bg-blue-600 text-white p-6 border-2 border-slate-900 pixel-shadow-lg flex flex-col justify-center items-center text-center">
+<h3 class="font-headline-md text-headline-md mb-2">Start Fresh</h3>
+<p class="font-body-sm text-body-sm mb-4 opacity-90">Spin up a new blueprint canvas.</p>
+<button class="px-6 py-2 bg-yellow-300 text-slate-900 border-2 border-slate-900 pixel-shadow btn-hover transition-transform font-technical-xs text-technical-xs uppercase tracking-wider font-bold w-full">
+                    New Generation
+                </button>
+</div>
+</section>
+<!-- Recent Projects Section -->
+<section>
+<div class="flex justify-between items-end mb-6 border-b-4 border-slate-900 pb-2">
+<h2 class="font-headline-lg text-headline-lg text-slate-900">Recent Projects</h2>
+<a class="font-technical-sm text-technical-sm text-blue-600 hover:underline decoration-2 underline-offset-4" href="#">View All</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+<!-- Project Card 1 -->
+<div class="bg-white p-4 wobbly-border pixel-shadow hover:-translate-y-1 hover:pixel-shadow-lg transition-all group cursor-pointer">
+<div class="aspect-video w-full border-2 border-slate-900 mb-4 bg-slate-100 relative overflow-hidden">
+<img alt="Project Alpha Sketch" class="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 transition-all" data-alt="A rough, hand-drawn sketch of a mobile app interface on a slightly textured light blue background. The UI elements are represented by jagged, wobbly black lines, resembling a wireframe created with a thick marker. It looks like an early-stage blueprint with placeholder boxes and scribbled text, embodying a raw, unrefined design process." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZ-e8yHhXkpM0NB1SYcINs-g2tHEJF5xfEa3WTnfoFKdMZXjEFyVvSGsOspNviLxWnERgHYfuJNMvrpUIQJhws_OmWB7h2PnapWkrbtTfTBaCGlkolo9sd0zcySyNdhUrkRwIX7OjPLGry2w8_96ZWO2fKJ9A8YM3NrGWjJ-ay2-YcxZF9FzH2VBEZSSJZeeDDYRXt8X05jJGc-S-eO-go7-wdTSh7vHtmY-WnNji5XXNFgrY7zvFp4TseSZ7Y4D4Hrk28R7mdqznj"/>
+<div class="absolute top-2 right-2 bg-white border-2 border-slate-900 px-2 py-1 font-technical-xs text-technical-xs">v1.2</div>
+</div>
+<h3 class="font-headline-md text-headline-md text-slate-900 truncate">Project Alpha</h3>
+<p class="font-body-md text-body-md text-slate-500 text-sm mt-1 mb-3">E-commerce wireframes</p>
+<div class="flex gap-2">
+<span class="px-2 py-1 bg-surface-variant border border-slate-900 font-technical-xs text-technical-xs">UI</span>
+<span class="px-2 py-1 bg-blue-100 border border-slate-900 font-technical-xs text-technical-xs text-blue-800">Draft</span>
+</div>
+</div>
+<!-- Project Card 2 -->
+<div class="bg-white p-4 wobbly-border pixel-shadow hover:-translate-y-1 hover:pixel-shadow-lg transition-all group cursor-pointer">
+<div class="aspect-video w-full border-2 border-slate-900 mb-4 bg-slate-100 relative overflow-hidden">
+<img alt="Dashboard Beta Sketch" class="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 transition-all" data-alt="A doodle-style rendering of a complex dashboard layout. Thick, irregular black outlines define various charts, graphs, and sidebars over a crisp white canvas. The style is reminiscent of a whiteboard sketch transposed into a digital 8-bit environment, highlighting structural logic with a playful, hand-crafted aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtBG1yirQyxEdKaOirhgLqV1XqBzdSgEWJ1nX788FtdZvIXCLH4oWn2CBaFwKsGwtZTwdTnB2FGDbvq63tP35cW6Yqfx0i_Tu4BceTDVLbVhzoJhDH4QHLpR66xbntL1J_2cIvo0AZQWjfdbaStXbyJU9FwBQrbBrHCX-5Ia2dmPKh1ED7MUWYCgBWikGtsJi6-A3wQegIHIGuFxmmMd_RP7qhwsyUh3exFcrIOPKGqQVbowSBJo_eHTHyOutHxatWk0Y12DLib7RD"/>
+<div class="absolute top-2 right-2 bg-white border-2 border-slate-900 px-2 py-1 font-technical-xs text-technical-xs">v0.9</div>
+</div>
+<h3 class="font-headline-md text-headline-md text-slate-900 truncate">Dashboard Beta</h3>
+<p class="font-body-md text-body-md text-slate-500 text-sm mt-1 mb-3">Analytics view</p>
+<div class="flex gap-2">
+<span class="px-2 py-1 bg-surface-variant border border-slate-900 font-technical-xs text-technical-xs">Web</span>
+<span class="px-2 py-1 bg-green-100 border border-slate-900 font-technical-xs text-technical-xs text-green-800">Review</span>
+</div>
+</div>
+<!-- Project Card 3 -->
+<div class="bg-white p-4 wobbly-border pixel-shadow hover:-translate-y-1 hover:pixel-shadow-lg transition-all group cursor-pointer">
+<div class="aspect-video w-full border-2 border-slate-900 mb-4 bg-slate-100 relative overflow-hidden flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl text-slate-300">image_not_supported</span>
+<div class="absolute top-2 right-2 bg-white border-2 border-slate-900 px-2 py-1 font-technical-xs text-technical-xs">New</div>
+</div>
+<h3 class="font-headline-md text-headline-md text-slate-900 truncate">Landing Page</h3>
+<p class="font-body-md text-body-md text-slate-500 text-sm mt-1 mb-3">Marketing site</p>
+<div class="flex gap-2">
+<span class="px-2 py-1 bg-surface-variant border border-slate-900 font-technical-xs text-technical-xs">Marketing</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+</body></html>

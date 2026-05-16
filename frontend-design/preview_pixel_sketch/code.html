@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FigCo - Component Preview</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;family=Epilogue:wght@600;700;800&amp;family=Inter:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "on-surface-variant": "#424754",
+                "surface-container-low": "#f0f3ff",
+                "surface-container-high": "#dee8ff",
+                "on-tertiary-container": "#fbfdff",
+                "tertiary-fixed-dim": "#bfc8ce",
+                "tertiary": "#545d62",
+                "tertiary-fixed": "#dbe4ea",
+                "on-error-container": "#93000a",
+                "surface-container-highest": "#d8e3fb",
+                "on-tertiary-fixed": "#141d21",
+                "primary-fixed-dim": "#adc6ff",
+                "surface-variant": "#d8e3fb",
+                "on-background": "#111c2d",
+                "primary-fixed": "#d8e2ff",
+                "inverse-on-surface": "#ecf1ff",
+                "surface-container-lowest": "#ffffff",
+                "inverse-surface": "#263143",
+                "surface-tint": "#005ac2",
+                "on-secondary": "#ffffff",
+                "secondary-fixed": "#d3e5f1",
+                "outline": "#727785",
+                "on-primary-fixed-variant": "#004395",
+                "surface-bright": "#f9f9ff",
+                "on-error": "#ffffff",
+                "surface": "#f9f9ff",
+                "outline-variant": "#c2c6d6",
+                "on-tertiary": "#ffffff",
+                "surface-dim": "#cfdaf2",
+                "on-secondary-fixed-variant": "#384953",
+                "tertiary-container": "#6d767b",
+                "background": "#f9f9ff",
+                "primary": "#0058be",
+                "on-surface": "#111c2d",
+                "error": "#ba1a1a",
+                "primary-container": "#2170e4",
+                "secondary-container": "#d3e5f1",
+                "on-secondary-fixed": "#0c1e26",
+                "on-primary-container": "#fefcff",
+                "on-tertiary-fixed-variant": "#3f484d",
+                "error-container": "#ffdad6",
+                "secondary-fixed-dim": "#b7c9d5",
+                "inverse-primary": "#adc6ff",
+                "on-secondary-container": "#566771",
+                "on-primary": "#ffffff",
+                "on-primary-fixed": "#001a42",
+                "secondary": "#50616b",
+                "surface-container": "#e7eeff"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "stack-sm": "8px",
+                "stack-md": "16px",
+                "pixel-unit": "4px",
+                "gutter": "20px",
+                "container-padding": "24px",
+                "stack-lg": "32px"
+        },
+        "fontFamily": {
+                "headline-lg": [
+                        "Epilogue"
+                ],
+                "technical-xs": [
+                        "Space Grotesk"
+                ],
+                "body-md": [
+                        "Inter"
+                ],
+                "headline-md": [
+                        "Epilogue"
+                ],
+                "technical-sm": [
+                        "Space Grotesk"
+                ],
+                "body-lg": [
+                        "Inter"
+                ],
+                "headline-xl": [
+                        "Epilogue"
+                ]
+        },
+        "fontSize": {
+                "headline-lg": [
+                        "32px",
+                        {
+                                "lineHeight": "1.2",
+                                "fontWeight": "700"
+                        }
+                ],
+                "technical-xs": [
+                        "12px",
+                        {
+                                "lineHeight": "1.2",
+                                "fontWeight": "700"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "1.5",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-md": [
+                        "24px",
+                        {
+                                "lineHeight": "1.3",
+                                "fontWeight": "600"
+                        }
+                ],
+                "technical-sm": [
+                        "14px",
+                        {
+                                "lineHeight": "1.4",
+                                "letterSpacing": "0.05em",
+                                "fontWeight": "500"
+                        }
+                ],
+                "body-lg": [
+                        "18px",
+                        {
+                                "lineHeight": "1.6",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-xl": [
+                        "48px",
+                        {
+                                "lineHeight": "1.1",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "800"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="bg-white dark:bg-slate-900 border-b-4 border-slate-900 dark:border-slate-100 w-full shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] sticky top-0 z-50">
+<div class="flex justify-between items-center h-16 px-6">
+<div class="flex items-center gap-4">
+<span class="text-xl font-black text-slate-900 dark:text-white italic tracking-tighter">FigCo</span>
+<div class="hidden md:flex gap-6 ml-8">
+<a class="text-slate-500 dark:text-slate-400 font-['Space_Grotesk'] uppercase tracking-wider text-xs font-bold hover:bg-blue-50 dark:hover:bg-slate-800 hover:translate-y-0.5 transition-transform active:translate-y-1 active:shadow-none p-2" href="#">Workspace</a>
+<a class="text-blue-600 dark:text-blue-400 underline decoration-2 underline-offset-4 font-['Space_Grotesk'] uppercase tracking-wider text-xs font-bold p-2" href="#">Component Library</a>
+<a class="text-slate-500 dark:text-slate-400 font-['Space_Grotesk'] uppercase tracking-wider text-xs font-bold hover:bg-blue-50 dark:hover:bg-slate-800 hover:translate-y-0.5 transition-transform active:translate-y-1 active:shadow-none p-2" href="#">v1.0.4</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 border-2 border-transparent hover:border-slate-900 transition-all rounded-sm">
+<span class="material-symbols-outlined text-slate-900">notifications</span>
+</button>
+<button class="p-2 border-2 border-transparent hover:border-slate-900 transition-all rounded-sm">
+<span class="material-symbols-outlined text-slate-900">help</span>
+</button>
+<img alt="Pixelated user avatar" class="w-8 h-8 border-2 border-slate-900 rounded-sm" data-alt="A small, stylized avatar image representing a user in an 8-bit retro gaming style. The avatar features a simple character with pixelated edges, using a vibrant color palette of deep blues and bright whites. The overall aesthetic is blocky and geometric, fitting seamlessly into a tech-focused, nostalgic interface design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMlldUv2J6RI1rKXhoRzPsGRru9tvEZd8KAq2Bywdh_yNuA5C_wbskJsdFF_sA-lxIbqt-I7MxEkYOLq3WUTCxLkViSnri1FZiPH1-LtGJI3lbZn_4FWiByCbKnjHdFrQWwn-UWASQqBXhTElefPhaibZz9zG4UZBeEWCtFOp_1bJ922UEvGHrR1Y0F1QKPC1A0fzRFn6ZX3VIRRCKznAjdM3t_ix3S4QeRshtkOtT5eYwOFsIjJrMJzOATPaHMoa230_O_U52ggc4"/>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- Side Navigation Bar -->
+<aside class="hidden md:flex flex-col gap-4 p-6 fixed left-0 top-16 h-[calc(100vh-64px)] overflow-y-auto bg-white dark:bg-slate-900 border-r-4 border-slate-900 dark:border-slate-100 w-64 shadow-[8px_0px_0px_0px_rgba(30,41,59,1)] z-40">
+<div class="mb-8">
+<h2 class="text-lg font-black text-slate-900 dark:text-white">FigCo App</h2>
+<p class="font-['Space_Grotesk'] font-bold text-sm text-slate-500">Blueprint Mode</p>
+</div>
+<button class="w-full py-2 px-4 bg-primary-fixed text-on-primary-fixed font-technical-xs uppercase border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] hover:translate-y-1 hover:translate-x-1 hover:shadow-[0px_0px_0px_0px_rgba(30,41,59,1)] transition-all flex items-center justify-center gap-2 mb-4">
+<span class="material-symbols-outlined text-sm">add</span> New Project
+        </button>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 p-3 text-slate-700 dark:text-slate-300 border-2 border-transparent font-['Space_Grotesk'] font-bold text-sm hover:border-slate-900 dark:hover:border-slate-100 hover:translate-x-1 transition-all" href="#">
+<span class="material-symbols-outlined">folder_open</span> Projects
+            </a>
+<a class="flex items-center gap-3 p-3 bg-blue-500 text-white border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] translate-x-[-2px] font-['Space_Grotesk'] font-bold text-sm" href="#">
+<span class="material-symbols-outlined">grid_view</span> Component Library
+            </a>
+<a class="flex items-center gap-3 p-3 text-slate-700 dark:text-slate-300 border-2 border-transparent font-['Space_Grotesk'] font-bold text-sm hover:border-slate-900 dark:hover:border-slate-100 hover:translate-x-1 transition-all" href="#">
+<span class="material-symbols-outlined">settings</span> Settings
+            </a>
+<a class="flex items-center gap-3 p-3 text-slate-700 dark:text-slate-300 border-2 border-transparent font-['Space_Grotesk'] font-bold text-sm hover:border-slate-900 dark:hover:border-slate-100 hover:translate-x-1 transition-all" href="#">
+<span class="material-symbols-outlined">key</span> API Keys
+            </a>
+</nav>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 ml-0 md:ml-64 p-container-padding lg:p-stack-lg bg-surface-container-low min-h-full">
+<!-- Action Bar -->
+<div class="flex justify-between items-center mb-stack-lg">
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Hero Component View</h1>
+<div class="flex gap-stack-md">
+<button class="px-4 py-2 bg-white border-2 border-slate-900 text-slate-900 font-technical-xs uppercase shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">content_copy</span> Copy Code
+                </button>
+<button class="px-4 py-2 bg-primary-container text-on-primary-container border-2 border-slate-900 font-technical-xs uppercase shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] hover:translate-y-1 hover:translate-x-1 hover:shadow-none transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">refresh</span> Re-generate
+                </button>
+</div>
+</div>
+<!-- Split Screen Container -->
+<div class="flex flex-col lg:flex-row gap-stack-lg h-[800px]">
+<!-- Left Pane: Figma Design -->
+<div class="flex-1 bg-white border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(30,41,59,1)] relative overflow-hidden flex flex-col">
+<div class="bg-surface-dim border-b-4 border-slate-900 p-2 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-slate-900">brush</span>
+<span class="font-technical-sm text-technical-sm text-slate-900 uppercase">Figma Design</span>
+</div>
+<div class="flex gap-1">
+<div class="w-3 h-3 border-2 border-slate-900 bg-error"></div>
+<div class="w-3 h-3 border-2 border-slate-900 bg-surface-tint"></div>
+<div class="w-3 h-3 border-2 border-slate-900 bg-primary-fixed-dim"></div>
+</div>
+</div>
+<div class="flex-1 p-4 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PHBhdGggZD0iTTEgMWgxOG0tMTggOThoMThtLTE4IDk4aDE4TTkgMXYxOG0tOCAwdjE4bS04IDB2MTgiIHN0cm9rZT0iI2U1ZTdlYiIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIi8+PC9zdmc+')] relative">
+<!-- Placeholder for the actual figma image -->
+<img alt="Figma prototype" class="w-full h-full object-cover border-2 border-dashed border-slate-400" data-alt="A stylized representation of a digital wireframe or mockup within a design software interface. The wireframe features blocky, 8-bit style elements with stark black outlines on a light grid background. It incorporates elements like placeholder images, text boxes with jagged, sketchy borders, and simple geometric buttons. The color palette is minimal, mostly monochromatic with intentional pops of primary blue to highlight interactive areas." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmamhdzchSGwoRwQgmPIGX5ROLWaqMQh40ZYzyAp2tg_TMsLSiMHhhvc3GBoF77hTgoCzdAfwFkiDxdvOsFGYL2mJJa2F77rRgfQD2yJROCsfJm2dEkCLgLAe1Ytn3kOWWOswqcZjRE0Y87zuB2-7Qyj1x_VMQ3dC-V1sLtU7fcWRal3_GocQGqiWT2Z6H4_yFAUFNgqsauj_gwyIBHvFGhSsJmdoSoqznSffaSzV7NPyP3a_WnsAYX7wGjAHsiL3E_EfJO4THi_4t"/>
+</div>
+</div>
+<!-- Central Sketchy Divider (Visible on LG) -->
+<div class="hidden lg:flex items-center justify-center w-8 relative">
+<div class="absolute inset-y-0 w-1 border-l-2 border-dashed border-slate-400"></div>
+<div class="absolute inset-y-0 w-1 border-r-2 border-dashed border-slate-400 right-[14px]"></div>
+<div class="z-10 bg-surface-container-low p-2 rounded-full border-2 border-slate-900">
+<span class="material-symbols-outlined text-slate-900">code_blocks</span>
+</div>
+</div>
+<!-- Right Pane: Preview & Code -->
+<div class="flex-1 bg-white border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(30,41,59,1)] flex flex-col">
+<!-- Tabs -->
+<div class="flex border-b-4 border-slate-900">
+<button class="flex-1 p-3 bg-primary-fixed border-r-4 border-slate-900 font-technical-sm text-technical-sm text-on-primary-fixed uppercase flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">visibility</span> Preview
+                    </button>
+<button class="flex-1 p-3 bg-surface-container-low font-technical-sm text-technical-sm text-slate-600 uppercase flex items-center justify-center gap-2 hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined">terminal</span> Code
+                    </button>
+</div>
+<!-- Content Area -->
+<div class="flex-1 p-stack-md bg-surface-bright relative overflow-auto">
+<!-- Simulated Code Content (Hidden initially, shown for context) -->
+<!-- 
+                    <div class="font-['Space_Grotesk'] text-sm text-slate-800 whitespace-pre">
+                        <span class="text-blue-600">&lt;div</span> <span class="text-green-600">class</span>=<span class="text-orange-600">"flex flex-col gap-4 border-2 border-slate-900 p-6"</span><span class="text-blue-600">&gt;</span>
+                          <span class="text-blue-600">&lt;h1</span> <span class="text-green-600">class</span>=<span class="text-orange-600">"font-headline-lg text-headline-lg"</span><span class="text-blue-600">&gt;</span>Hero Content<span class="text-blue-600">&lt;/h1&gt;</span>
+                          ...
+                    </div>
+                    -->
+<!-- Skeleton Loader / Processing State -->
+<div class="h-full flex flex-col justify-center items-center gap-stack-md">
+<div class="relative inline-block">
+<!-- Doodled Gear/Processing Icon -->
+<span class="material-symbols-outlined text-6xl text-slate-900 animate-spin" style="animation-duration: 3s;">settings</span>
+<!-- Hand-drawn style decorative elements around loader -->
+<div class="absolute -top-4 -left-4 w-4 h-4 border-2 border-slate-900 rotate-12"></div>
+<div class="absolute -bottom-4 -right-4 w-6 h-6 border-2 border-slate-900 rounded-full border-dashed"></div>
+</div>
+<div class="font-technical-sm text-technical-sm text-slate-900 uppercase tracking-widest mt-4">
+                            Compiling 8-Bit Blocks...
+                        </div>
+<!-- Blocky Progress Bar -->
+<div class="w-64 h-6 border-2 border-slate-900 p-1 flex gap-1">
+<div class="flex-1 bg-surface-tint border-r border-slate-900"></div>
+<div class="flex-1 bg-surface-tint border-r border-slate-900"></div>
+<div class="flex-1 bg-surface-tint border-r border-slate-900"></div>
+<div class="flex-1 bg-surface-container-low border-r border-slate-900"></div>
+<div class="flex-1 bg-surface-container-low"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>
