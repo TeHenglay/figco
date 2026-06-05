@@ -177,7 +177,34 @@ class HomeworkController extends Controller
 </body></html>
 HTML;
 
-        $mpdf->WriteHTML($html);
+        try {
+            $mpdf->WriteHTML($html);
+        } catch (\Mpdf\MpdfException $e) {
+            if (str_contains($e->getMessage(), 'MarkGlyphSets')) {
+                // Font has unsupported GDEF MarkGlyphSets — retry without OTL
+                $mpdf = new \Mpdf\Mpdf([
+                    'mode'          => 'utf-8',
+                    'format'        => 'A4',
+                    'margin_top'    => 20,
+                    'margin_bottom' => 20,
+                    'margin_left'   => 20,
+                    'margin_right'  => 20,
+                    'tempDir'       => $tmpDir,
+                    'fontDir'       => [storage_path('fonts')],
+                    'fontdata'      => [
+                        'notokhmer' => [
+                            'R'      => 'NotoKhmer.ttf',
+                            'useOTL' => 0x00,
+                        ],
+                    ],
+                    'default_font'      => 'notokhmer',
+                    'default_font_size' => 12,
+                ]);
+                $mpdf->WriteHTML($html);
+            } else {
+                throw $e;
+            }
+        }
 
         return response($mpdf->Output('', \Mpdf\Output\Destination::STRING_RETURN), 200, [
             'Content-Type'        => 'application/pdf',
