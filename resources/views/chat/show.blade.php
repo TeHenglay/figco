@@ -52,7 +52,11 @@
                     @if($msg->role === 'assistant')
                         <p class="font-technical-xs text-technical-xs text-blue-600 font-bold mb-1">Nova</p>
                     @endif
-                    <p class="font-body-md text-body-md text-sm whitespace-pre-wrap">{{ $msg->content }}</p>
+                    @if($msg->role === 'assistant')
+                        <div class="nova-markdown" data-md="{{ e($msg->content) }}"></div>
+                    @else
+                        <p class="font-body-md text-body-md text-sm whitespace-pre-wrap">{{ $msg->content }}</p>
+                    @endif
                     <p class="font-technical-xs text-technical-xs mt-2 opacity-50 text-right text-[10px]">{{ $msg->created_at->format('H:i') }}</p>
                 </div>
                 @if($msg->role === 'user')
@@ -77,7 +81,12 @@
                     <template x-if="msg.role === 'assistant'">
                         <p class="font-technical-xs text-technical-xs text-blue-600 font-bold mb-1">Nova</p>
                     </template>
-                    <p class="font-body-md text-body-md text-sm whitespace-pre-wrap" x-text="msg.content"></p>
+                    <template x-if="msg.role === 'assistant'">
+                        <div class="nova-markdown" x-html="renderMarkdown(msg.content)"></div>
+                    </template>
+                    <template x-if="msg.role === 'user'">
+                        <p class="font-body-md text-body-md text-sm whitespace-pre-wrap" x-text="msg.content"></p>
+                    </template>
                 </div>
                 <template x-if="msg.role === 'user'">
                     <div class="w-10 h-10 border-2 border-slate-900 bg-primary-fixed flex items-center justify-center flex-shrink-0 self-end">
@@ -148,7 +157,37 @@
 
 </div>
 
+<style>
+.nova-markdown { font-size: 0.875rem; line-height: 1.6; color: #1e293b; }
+.nova-markdown p { margin: 0 0 0.5rem; }
+.nova-markdown p:last-child { margin-bottom: 0; }
+.nova-markdown strong { font-weight: 700; }
+.nova-markdown em { font-style: italic; }
+.nova-markdown ul { list-style-type: disc; padding-left: 1.25rem; margin: 0.5rem 0; }
+.nova-markdown ol { list-style-type: decimal; padding-left: 1.25rem; margin: 0.5rem 0; }
+.nova-markdown li { margin: 0.2rem 0; }
+.nova-markdown code { background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 3px; padding: 0.1em 0.3em; font-size: 0.8em; font-family: monospace; }
+.nova-markdown pre { background: #f1f5f9; border: 1px solid #e2e8f0; padding: 0.75rem; margin: 0.5rem 0; overflow-x: auto; }
+.nova-markdown pre code { background: none; border: none; padding: 0; }
+.nova-markdown h1,.nova-markdown h2,.nova-markdown h3 { font-weight: 700; margin: 0.75rem 0 0.25rem; }
+.nova-markdown h1 { font-size: 1.1rem; }
+.nova-markdown h2 { font-size: 1rem; }
+.nova-markdown h3 { font-size: 0.9rem; }
+.nova-markdown hr { border: none; border-top: 1px solid #e2e8f0; margin: 0.75rem 0; }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
+function renderMarkdown(text) {
+    return marked.parse(text || '', { breaks: true, gfm: true });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.nova-markdown[data-md]').forEach(el => {
+        el.innerHTML = renderMarkdown(el.dataset.md);
+        el.removeAttribute('data-md');
+    });
+});
+
 function chatApp(conversationId, csrfToken) {
     return {
         input: '',
