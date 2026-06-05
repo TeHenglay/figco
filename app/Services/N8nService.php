@@ -30,16 +30,18 @@ class N8nService
 
         $data = $response->json();
 
-        // n8n may return an array [{...}] or a plain object {...}
+        // n8n may return [{...}] or {...}
         $item = is_array($data) && isset($data[0]) ? $data[0] : $data;
 
-        $reply = $item['reply'] ?? $item['text'] ?? $item['response'] ?? $item['output'] ?? $item['message'] ?? null;
+        $raw = $item['reply'] ?? $item['text'] ?? $item['response'] ?? $item['output'] ?? $item['message'] ?? null;
 
-        if (is_string($reply) && trim($reply) !== '') {
-            return trim($reply);
+        $reply = $this->extractText($raw);
+
+        if ($reply !== null) {
+            return $reply;
         }
 
-        // Last resort: if the whole body is a plain non-JSON string
+        // Last resort: plain text body
         $body = trim($response->body());
         if ($body !== '' && !str_starts_with($body, '{') && !str_starts_with($body, '[')) {
             return $body;
@@ -47,6 +49,30 @@ class N8nService
 
         Log::warning('n8n chat: could not extract reply', ['data' => $data]);
         return 'Sorry, I had trouble responding. Please try again.';
+    }
+
+    private function extractText(mixed $value): ?string
+    {
+        if (is_string($value) && trim($value) !== '') {
+            return trim($value);
+        }
+
+        if (is_array($value)) {
+            // Gemini content object: {parts: [{text: "..."}]}
+            if (isset($value['parts'][0]['text'])) {
+                return trim($value['parts'][0]['text']);
+            }
+            // Direct text field
+            if (isset($value['text']) && is_string($value['text'])) {
+                return trim($value['text']);
+            }
+            // candidates[0].content.parts[0].text
+            if (isset($value['candidates'][0]['content']['parts'][0]['text'])) {
+                return trim($value['candidates'][0]['content']['parts'][0]['text']);
+            }
+        }
+
+        return null;
     }
 
     public function triggerHomework(int $homeworkId, string $pdfBase64, string $filename, string $instructions, string $callbackUrl): void
