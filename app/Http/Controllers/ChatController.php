@@ -51,7 +51,12 @@ class ChatController extends Controller
             ->values()
             ->toArray();
 
-        $reply = $n8n->callChatSync($conversation->id, auth()->id(), $validated['message'], $history);
+        try {
+            $reply = $n8n->callChatSync($conversation->id, auth()->id(), $validated['message'], $history);
+        } catch (\Throwable $e) {
+            \Log::error('Chat sendMessage error', ['error' => $e->getMessage()]);
+            $reply = 'Sorry, I had trouble responding. Please try again.';
+        }
 
         $assistantMessage = $conversation->messages()->create(['role' => 'assistant', 'content' => $reply]);
 
