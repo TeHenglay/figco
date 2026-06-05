@@ -4,9 +4,15 @@ WORKDIR /app
 
 RUN apk add --no-cache \
     git curl zip unzip nodejs npm \
-    postgresql-dev oniguruma-dev libxml2-dev libpng-dev
+    postgresql-dev oniguruma-dev libxml2-dev libpng-dev libzip-dev \
+    font-noto-khmer
 
-RUN docker-php-ext-install pdo pdo_pgsql mbstring xml bcmath gd
+RUN docker-php-ext-install pdo pdo_pgsql mbstring xml bcmath gd zip
+
+# Copy Noto Khmer font to app storage for DomPDF
+RUN mkdir -p /app/storage/fonts && \
+    find /usr/share/fonts -name "*Khmer*" -o -name "*khmer*" 2>/dev/null | head -1 | \
+    xargs -I{} cp {} /app/storage/fonts/NotoKhmer.ttf || true
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
