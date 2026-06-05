@@ -36,12 +36,9 @@ return [
     ],
 
     'n8n' => [
-        'webhook_url'     => env('N8N_WEBHOOK_URL', 'http://localhost:5678/webhook/design-to-code'),
-        'callback_secret' => env('N8N_CALLBACK_SECRET', 'changeme'),
-    ],
-
-    'figma' => [
-        'access_token' => env('FIGMA_ACCESS_TOKEN'),
+        'chat_webhook_url'     => env('N8N_CHAT_WEBHOOK_URL'),
+        'homework_webhook_url' => env('N8N_HOMEWORK_WEBHOOK_URL'),
+        'callback_secret'      => env('N8N_CALLBACK_SECRET', 'changeme'),
     ],
 
 ];

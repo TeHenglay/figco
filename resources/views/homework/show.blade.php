@@ -1,0 +1,146 @@
+<x-app-layout>
+
+    <header class="flex items-center gap-4 mb-8">
+        <a href="{{ route('homework.index') }}" class="w-9 h-9 border-2 border-slate-900 flex items-center justify-center hover:bg-surface-container transition-colors">
+            <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+        </a>
+        <div class="flex-1 min-w-0">
+            <h2 class="font-headline-xl text-headline-xl text-slate-900 truncate" style="font-family: Epilogue, sans-serif;">{{ $homework->original_filename }}</h2>
+            <p class="font-technical-xs text-technical-xs text-slate-400 mt-1">Generated {{ $homework->created_at->diffForHumans() }}</p>
+        </div>
+        <span class="px-3 py-1.5 border-2 border-slate-900 font-technical-xs text-technical-xs uppercase tracking-wider font-bold
+            {{ $homework->status === 'completed' ? 'bg-green-100 text-green-800 border-green-600' : ($homework->status === 'processing' ? 'bg-yellow-100 text-yellow-800 border-yellow-500' : ($homework->status === 'failed' ? 'bg-red-100 text-red-800 border-red-600' : 'bg-slate-100 text-slate-700')) }}">
+            {{ ucfirst($homework->status) }}
+        </span>
+    </header>
+
+    @if($homework->status === 'processing' || $homework->status === 'pending')
+        <!-- Processing State -->
+        <div class="max-w-xl" x-data="pollStatus({{ $homework->id }}, '{{ route('homework.status', $homework) }}')" x-init="startPolling()">
+            <div class="bg-white border-2 border-slate-900 pixel-shadow-lg">
+                <div class="h-1.5 bg-yellow-400 border-b-2 border-slate-900 animate-pulse"></div>
+                <div class="p-10 flex flex-col items-center text-center">
+                    <div class="w-16 h-16 border-4 border-slate-900 bg-yellow-100 flex items-center justify-center mb-6 relative">
+                        <span class="material-symbols-outlined text-yellow-700 text-3xl animate-spin" style="animation-duration:2s;">settings</span>
+                    </div>
+                    <h3 class="font-headline-md text-headline-md text-slate-900 mb-2" style="font-family: Epilogue, sans-serif;">AI is generating your homework</h3>
+                    <p class="font-body-md text-body-md text-slate-500 text-sm mb-6">Gemini is reading your lesson PDF and crafting the perfect assignment. This usually takes 30–60 seconds.</p>
+                    <div class="w-full bg-slate-200 border-2 border-slate-900 h-3 mb-2">
+                        <div class="bg-blue-500 h-full border-r-2 border-slate-900 animate-pulse" style="width: 65%"></div>
+                    </div>
+                    <p class="font-technical-xs text-technical-xs text-slate-400">Auto-refreshing every 5 seconds...</p>
+                </div>
+            </div>
+        </div>
+
+        <script>
+        function pollStatus(hwId, statusUrl) {
+            return {
+                startPolling() {
+                    const interval = setInterval(async () => {
+                        try {
+                            const res = await fetch(statusUrl, { headers: { 'Accept': 'application/json' } });
+                            const data = await res.json();
+                            if (data.status === 'completed' || data.status === 'failed') {
+                                clearInterval(interval);
+                                window.location.reload();
+                            }
+                        } catch (e) {}
+                    }, 5000);
+                }
+            }
+        }
+        </script>
+
+    @elseif($homework->status === 'failed')
+        <!-- Failed State -->
+        <div class="max-w-xl">
+            <div class="bg-white border-2 border-red-600 pixel-shadow">
+                <div class="h-1.5 bg-red-500 border-b-2 border-red-600"></div>
+                <div class="p-8 flex flex-col items-center text-center">
+                    <span class="material-symbols-outlined text-red-500 text-5xl mb-4">error</span>
+                    <h3 class="font-headline-md text-headline-md text-slate-900 mb-2" style="font-family: Epilogue, sans-serif;">Generation Failed</h3>
+                    <p class="font-technical-xs text-technical-xs text-red-700 bg-red-50 border border-red-300 px-4 py-3 mb-6 w-full text-left">{{ $homework->error_message ?? 'An unexpected error occurred.' }}</p>
+                    <div class="flex gap-4">
+                        <a href="{{ route('homework.create') }}"
+                           class="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white border-2 border-slate-900 pixel-shadow btn-hover transition-transform font-technical-xs text-technical-xs uppercase font-bold">
+                            <span class="material-symbols-outlined text-[18px]">refresh</span>
+                            Try Again
+                        </a>
+                        <form method="POST" action="{{ route('homework.destroy', $homework) }}">
+                            @csrf @method('DELETE')
+                            <button type="submit" class="px-6 py-3 border-2 border-red-600 text-red-700 font-technical-xs text-technical-xs uppercase font-bold hover:bg-red-50 transition-colors">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    @elseif($homework->status === 'completed')
+        <!-- Completed State -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <!-- Sidebar: info + downloads -->
+            <div class="space-y-4">
+                <!-- Download Buttons -->
+                <div class="bg-white border-2 border-slate-900 pixel-shadow">
+                    <div class="h-1.5 bg-green-500 border-b-2 border-slate-900"></div>
+                    <div class="p-5">
+                        <h3 class="font-technical-sm text-technical-sm text-slate-700 uppercase tracking-wider mb-4 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[18px] text-green-600">download</span>
+                            Download
+                        </h3>
+                        <div class="space-y-3">
+                            <a href="{{ route('homework.download', [$homework, 'pdf']) }}"
+                               class="flex items-center justify-center gap-2 w-full px-4 py-3 bg-red-500 text-white border-2 border-slate-900 pixel-shadow btn-hover transition-transform font-technical-xs text-technical-xs uppercase tracking-wider font-bold">
+                                <span class="material-symbols-outlined text-[18px]">picture_as_pdf</span>
+                                Download PDF
+                            </a>
+                            <a href="{{ route('homework.download', [$homework, 'docx']) }}"
+                               class="flex items-center justify-center gap-2 w-full px-4 py-3 bg-blue-600 text-white border-2 border-slate-900 pixel-shadow btn-hover transition-transform font-technical-xs text-technical-xs uppercase tracking-wider font-bold">
+                                <span class="material-symbols-outlined text-[18px]">article</span>
+                                Download DOCX
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Instructions used -->
+                <div class="bg-surface-container-low border-2 border-slate-900 p-5">
+                    <h3 class="font-technical-sm text-technical-sm text-slate-700 uppercase tracking-wider mb-3 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[18px] text-blue-600">edit_note</span>
+                        Instructions Used
+                    </h3>
+                    <p class="font-technical-xs text-technical-xs text-slate-600 leading-relaxed">{{ $homework->instructions }}</p>
+                </div>
+
+                <!-- Delete -->
+                <form method="POST" action="{{ route('homework.destroy', $homework) }}" onsubmit="return confirm('Delete this homework?')">
+                    @csrf @method('DELETE')
+                    <button type="submit" class="w-full flex items-center justify-center gap-2 px-4 py-3 border-2 border-red-600 text-red-700 font-technical-xs text-technical-xs uppercase font-bold hover:bg-red-50 transition-colors">
+                        <span class="material-symbols-outlined text-[16px]">delete</span> Delete
+                    </button>
+                </form>
+            </div>
+
+            <!-- Main: preview -->
+            <div class="lg:col-span-2">
+                <div class="bg-white border-2 border-slate-900 pixel-shadow">
+                    <div class="flex items-center justify-between px-5 py-3 border-b-2 border-slate-900">
+                        <h3 class="font-technical-sm text-technical-sm text-slate-700 uppercase tracking-wider flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[18px] text-blue-600">preview</span>
+                            Homework Preview
+                        </h3>
+                    </div>
+                    <div class="p-6 prose prose-sm max-w-none font-body-md text-body-md text-sm leading-relaxed overflow-auto max-h-[70vh]">
+                        {!! $homework->homework_content !!}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    @endif
+
+</x-app-layout>

@@ -6,20 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('figma_access_token')->nullable()->after('password');
-        });
+        if (!Schema::hasColumn('users', 'gemini_api_key')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->string('gemini_api_key')->nullable()->after('remember_token');
+            });
+        }
     }
 
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('figma_access_token');
+            $table->dropColumn('gemini_api_key');
         });
     }
 };

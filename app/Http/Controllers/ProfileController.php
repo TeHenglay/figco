@@ -19,41 +19,26 @@ class ProfileController extends Controller
     public function updateApiKeys(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'figma_access_token' => 'nullable|string|max:500',
+            'gemini_api_key' => 'nullable|string|max:500',
         ]);
 
-        if (!empty($validated['figma_access_token']) && !str_contains($validated['figma_access_token'], '•')) {
-            $request->user()->update(['figma_access_token' => $validated['figma_access_token']]);
-        } elseif ($request->input('clear_figma_token')) {
-            $request->user()->update(['figma_access_token' => null]);
+        if (!empty($validated['gemini_api_key']) && !str_contains($validated['gemini_api_key'], '•')) {
+            $request->user()->update(['gemini_api_key' => $validated['gemini_api_key']]);
+        } elseif ($request->input('clear_key')) {
+            $request->user()->update(['gemini_api_key' => null]);
         }
 
         return Redirect::route('api-keys')->with('status', 'api-keys-updated');
     }
 
-    /**
-     * Display the user's profile form.
-     */
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
+        return view('profile.edit', ['user' => $request->user()]);
     }
 
-    /**
-     * Update the user's profile information.
-     */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $validated = $request->validated();
-
-        // Only update figma_access_token when a real token is submitted
-        if (empty($validated['figma_access_token']) || str_contains($validated['figma_access_token'], '•')) {
-            unset($validated['figma_access_token']);
-        }
-
-        $request->user()->fill($validated);
+        $request->user()->fill($request->validated());
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
@@ -64,9 +49,6 @@ class ProfileController extends Controller
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
 
-    /**
-     * Delete the user's account.
-     */
     public function destroy(Request $request): RedirectResponse
     {
         $request->validateWithBag('userDeletion', [
@@ -74,11 +56,8 @@ class ProfileController extends Controller
         ]);
 
         $user = $request->user();
-
         Auth::logout();
-
         $user->delete();
-
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 

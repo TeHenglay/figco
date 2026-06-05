@@ -26,7 +26,6 @@ class ProfileUpdateRequest extends FormRequest
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
-            'figma_access_token' => ['nullable', 'string', 'max:255'],
         ];
     }
 }
