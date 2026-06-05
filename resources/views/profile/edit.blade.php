@@ -6,7 +6,7 @@
             <span class="material-symbols-outlined text-[32px] text-on-primary-fixed" style="font-variation-settings: 'FILL' 1;">manage_accounts</span>
         </div>
         <div>
-            <h2 class="font-headline-xl text-headline-xl text-slate-900" style="font-family: Epilogue, sans-serif;">Settings</h2>
+            <h2 class="font-headline-xl text-headline-xl text-slate-900" style="font-family: Epilogue, sans-serif;">{{ __('Settings') }}</h2>
             <p class="font-technical-sm text-technical-sm text-slate-500 uppercase tracking-wider mt-1" style="font-family: 'Space Grotesk', sans-serif;">{{ Auth::user()->email }}</p>
         </div>
     </header>
@@ -34,7 +34,7 @@
 
                         <!-- Name -->
                         <div class="flex flex-col gap-2">
-                            <label for="name" class="font-technical-sm text-technical-sm text-slate-900 uppercase tracking-wider font-bold" style="font-family: 'Space Grotesk', sans-serif;">Name</label>
+                            <label for="name" class="font-technical-sm text-technical-sm text-slate-900 uppercase tracking-wider font-bold" style="font-family: 'Space Grotesk', sans-serif;">{{ __('Name') }}</label>
                             <input id="name" name="name" type="text"
                                    value="{{ old('name', $user->name) }}"
                                    required autofocus autocomplete="name"
@@ -47,7 +47,7 @@
 
                         <!-- Email -->
                         <div class="flex flex-col gap-2">
-                            <label for="email" class="font-technical-sm text-technical-sm text-slate-900 uppercase tracking-wider font-bold" style="font-family: 'Space Grotesk', sans-serif;">Email</label>
+                            <label for="email" class="font-technical-sm text-technical-sm text-slate-900 uppercase tracking-wider font-bold" style="font-family: 'Space Grotesk', sans-serif;">{{ __('Email') }}</label>
                             <input id="email" name="email" type="email"
                                    value="{{ old('email', $user->email) }}"
                                    required autocomplete="username"
@@ -74,7 +74,7 @@
                             <button type="submit"
                                     class="border-2 border-slate-900 bg-primary text-on-primary px-8 py-3 font-technical-sm text-technical-sm font-bold shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all duration-75 sketch-border inline-flex items-center gap-2">
                                 <span class="material-symbols-outlined text-[18px]">save</span>
-                                Save Changes
+                                {{ __('Save') }}
                             </button>
                             @if (session('status') === 'profile-updated')
                                 <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)"

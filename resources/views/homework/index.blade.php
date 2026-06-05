@@ -2,7 +2,7 @@
 
     <header class="flex justify-between items-center mb-10">
         <div>
-            <h2 class="font-headline-xl text-headline-xl text-slate-900" style="font-family: Epilogue, sans-serif;">Homework Generator</h2>
+            <h2 class="font-headline-xl text-headline-xl text-slate-900" style="font-family: Epilogue, sans-serif;">{{ __('Homework Generator') }}</h2>
             <p class="font-technical-sm text-technical-sm text-slate-500 mt-1">Upload a lesson PDF and AI generates homework instantly</p>
         </div>
         <a href="{{ route('homework.create') }}"

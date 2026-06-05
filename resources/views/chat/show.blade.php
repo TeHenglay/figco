@@ -126,7 +126,7 @@
              :class="sussyMode ? 'border-pink-500 bg-pink-950 text-pink-400' : 'border-slate-900 bg-green-50 text-green-700'">
             <span class="w-2 h-2 border block rounded-full animate-pulse"
                   :class="sussyMode ? 'bg-pink-500 border-pink-300' : 'bg-green-500 border-slate-900'"></span>
-            <span x-text="sussyMode ? 'Sussy Mode 🔥' : 'Monika Online'">Monika Online</span>
+            <span x-text="sussyMode ? 'Sussy Mode 🔥' : '{{ __('Monika Online') }}'">{{ __('Monika Online') }}</span>
         </div>
     </div>
 
@@ -303,7 +303,7 @@
                     x-model="input"
                     @keydown.enter.prevent="if (!$event.shiftKey) sendMessage()"
                     rows="1"
-                    :placeholder="sussyMode ? 'Ask Monika anything, babe~ 😏' : 'Ask Monika anything about your lesson...'"
+                    :placeholder="sussyMode ? 'Ask Monika anything, babe~ 😏' : '{{ __('Ask Monika anything about your lesson...') }}'"
                     class="msg-textarea w-full px-4 py-3 border-2 font-body-md text-body-md text-sm focus:outline-none transition-shadow resize-none"
                     :class="sussyMode
                         ? 'bg-[#14002a] border-purple-700 text-pink-100 placeholder-purple-700 focus:border-pink-500 focus:shadow-[4px_4px_0px_0px_#9333ea]'
@@ -329,7 +329,7 @@
                     : 'bg-blue-600 border-slate-900 shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none disabled:shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] disabled:translate-x-0 disabled:translate-y-0'"
                 class="px-5 py-3 text-white border-2 transition-all font-technical-xs text-technical-xs disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2 self-end">
                 <span class="material-symbols-outlined text-[20px]" x-text="loading ? 'hourglass_top' : 'send'">send</span>
-                <span x-text="loading ? (sussyMode ? 'Thinking~ 💅' : 'Thinking...') : 'Send'">Send</span>
+                <span x-text="loading ? (sussyMode ? 'Thinking~ 💅' : '{{ __('Thinking...') }}') : '{{ __('Send') }}'">{{ __('Send') }}</span>
             </button>
         </form>
         <p class="font-technical-xs text-technical-xs mt-2 transition-colors"

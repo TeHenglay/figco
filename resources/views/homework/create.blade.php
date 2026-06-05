@@ -5,7 +5,7 @@
             <span class="material-symbols-outlined text-[20px]">arrow_back</span>
         </a>
         <div>
-            <h2 class="font-headline-xl text-headline-xl text-slate-900" style="font-family: Epilogue, sans-serif;">Generate Homework</h2>
+            <h2 class="font-headline-xl text-headline-xl text-slate-900" style="font-family: Epilogue, sans-serif;">{{ __('Generate Homework') }}</h2>
             <p class="font-technical-sm text-technical-sm text-slate-500 mt-1">Upload your lesson PDF and describe what you need</p>
         </div>
     </header>
@@ -128,9 +128,9 @@
                 <button type="submit"
                     class="flex items-center gap-2 px-8 py-4 bg-blue-600 text-white border-2 border-slate-900 pixel-shadow-lg btn-hover transition-transform font-technical-sm text-technical-sm uppercase tracking-wider font-bold">
                     <span class="material-symbols-outlined">auto_awesome</span>
-                    Generate Homework
+                    {{ __('Generate Homework') }}
                 </button>
-                <a href="{{ route('homework.index') }}" class="font-technical-sm text-technical-sm text-slate-500 hover:text-slate-700">Cancel</a>
+                <a href="{{ route('homework.index') }}" class="font-technical-sm text-technical-sm text-slate-500 hover:text-slate-700">{{ __('Cancel') }}</a>
             </div>
 
         </form>

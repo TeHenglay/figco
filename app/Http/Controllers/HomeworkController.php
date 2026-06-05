@@ -124,35 +124,78 @@ class HomeworkController extends Controller
 
     private function streamPdf(string $title, string $content): \Symfony\Component\HttpFoundation\Response
     {
-        $safeTitle = htmlspecialchars($title);
-
-        $hasKhmer = (bool) preg_match('/[\x{1780}-\x{17FF}]/u', $content . $title);
-
+        $hasKhmer     = (bool) preg_match('/[\x{1780}-\x{17FF}]/u', $content . $title);
         $khmerFontPath = storage_path('fonts/NotoKhmer.ttf');
-        $khmerFontFace = '';
-        $fontFamily    = "'DejaVu Sans', sans-serif";
 
         if ($hasKhmer && file_exists($khmerFontPath)) {
-            // Register font for ALL weights so bold/strong elements don't fall back
-            $khmerFontFace = '
-                @font-face { font-family: "NotoKhmer"; src: url("' . $khmerFontPath . '") format("truetype"); font-weight: normal; font-style: normal; }
-                @font-face { font-family: "NotoKhmer"; src: url("' . $khmerFontPath . '") format("truetype"); font-weight: bold; font-style: normal; }
-                @font-face { font-family: "NotoKhmer"; src: url("' . $khmerFontPath . '") format("truetype"); font-weight: 100 900; font-style: normal; }
-            ';
-            $fontFamily = '"NotoKhmer", "DejaVu Sans", sans-serif';
+            return $this->streamPdfMpdf($title, $content, $khmerFontPath);
         }
 
+        return $this->streamPdfDompdf($title, $content);
+    }
+
+    private function streamPdfMpdf(string $title, string $content, string $fontPath): \Symfony\Component\HttpFoundation\Response
+    {
+        $tmpDir = storage_path('app/mpdf-tmp');
+        if (!is_dir($tmpDir)) mkdir($tmpDir, 0755, true);
+
+        $mpdf = new \Mpdf\Mpdf([
+            'mode'          => 'utf-8',
+            'format'        => 'A4',
+            'margin_top'    => 20,
+            'margin_bottom' => 20,
+            'margin_left'   => 20,
+            'margin_right'  => 20,
+            'tempDir'       => $tmpDir,
+            'fontDir'       => [storage_path('fonts')],
+            'fontdata'      => [
+                'notokhmer' => [
+                    'R'      => 'NotoKhmer.ttf',
+                    'useOTL' => 0xFF,
+                ],
+            ],
+            'default_font'      => 'notokhmer',
+            'default_font_size' => 12,
+        ]);
+
+        $safeTitle = htmlspecialchars($title);
+        $html = <<<HTML
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<style>
+    body { font-family: notokhmer; font-size: 12pt; color: #111; line-height: 2; }
+    h1 { font-size: 18pt; color: #1e293b; border-bottom: 2px solid #0058be; padding-bottom: 6px; margin-bottom: 14px; }
+    h2 { font-size: 14pt; color: #1e293b; margin-top: 16px; }
+    h3 { font-size: 12pt; color: #1e293b; }
+    p  { margin: 6px 0; }
+    ol, ul { padding-left: 18px; }
+    li { margin: 3px 0; }
+    strong, b { font-weight: bold; }
+</style>
+</head><body>
+<h1>{$safeTitle}</h1>
+{$content}
+</body></html>
+HTML;
+
+        $mpdf->WriteHTML($html);
+
+        return response($mpdf->Output('', \Mpdf\Output\Destination::STRING_RETURN), 200, [
+            'Content-Type'        => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="' . $title . '.pdf"',
+        ]);
+    }
+
+    private function streamPdfDompdf(string $title, string $content): \Symfony\Component\HttpFoundation\Response
+    {
+        $safeTitle = htmlspecialchars($title);
         $html = <<<HTML
         <!DOCTYPE html><html><head><meta charset="utf-8">
         <style>
-            {$khmerFontFace}
-            * { font-family: {$fontFamily}; }
-            body { font-size: 12px; color: #111; line-height: 2.2; margin: 40px; }
-            h1,h2,h3 { color: #1e293b; font-family: {$fontFamily}; }
+            body { font-family: "DejaVu Sans", sans-serif; font-size: 12px; color: #111; line-height: 1.6; margin: 40px; }
+            h1,h2,h3 { color: #1e293b; }
             h1 { font-size: 20px; border-bottom: 2px solid #0058be; padding-bottom: 8px; margin-bottom: 16px; }
             h2 { font-size: 16px; margin-top: 20px; }
             h3 { font-size: 14px; }
-            strong, b { font-family: {$fontFamily}; }
             p { margin: 8px 0; }
             ol, ul { padding-left: 20px; } li { margin: 4px 0; }
         </style></head><body><h1>{$safeTitle}</h1>{$content}</body></html>

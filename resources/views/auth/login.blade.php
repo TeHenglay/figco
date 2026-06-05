@@ -47,11 +47,11 @@
 
     @if (Route::has('register'))
         <div class="mt-6 pt-6 border-t-2 border-dashed border-slate-200 flex items-center justify-between">
-            <p class="font-technical-xs text-technical-xs text-slate-500">Don't have an account?</p>
+            <p class="font-technical-xs text-technical-xs text-slate-500">{{ __('No account yet?') }}</p>
             <a href="{{ route('register') }}"
                class="border-2 border-slate-900 px-5 py-2 font-technical-xs text-technical-xs uppercase tracking-wider font-bold text-slate-900 shadow-[3px_3px_0px_0px_rgba(30,41,59,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all duration-75 inline-flex items-center gap-2">
                 <span class="material-symbols-outlined text-[16px]">person_add</span>
-                Sign Up
+                {{ __('Sign Up') }}
             </a>
         </div>
     @endif

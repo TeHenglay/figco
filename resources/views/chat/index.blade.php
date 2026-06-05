@@ -2,7 +2,7 @@
 
     <header class="flex justify-between items-center mb-10">
         <div>
-            <h2 class="font-headline-xl text-headline-xl text-slate-900" style="font-family: Epilogue, sans-serif;">AI Assistant</h2>
+            <h2 class="font-headline-xl text-headline-xl text-slate-900" style="font-family: Epilogue, sans-serif;">{{ __('AI Assistant') }}</h2>
             <p class="font-technical-sm text-technical-sm text-slate-500 mt-1">Your personal teacher assistant — ask anything</p>
         </div>
         <form method="POST" action="{{ route('chat.store') }}">
@@ -40,7 +40,7 @@
                         <form method="POST" action="{{ route('chat.destroy', $conv) }}" onsubmit="return confirm('Delete this conversation?')">
                             @csrf @method('DELETE')
                             <button type="submit" class="font-technical-xs text-technical-xs text-red-500 hover:text-red-700 flex items-center gap-1">
-                                <span class="material-symbols-outlined text-[16px]">delete</span> Delete
+                                <span class="material-symbols-outlined text-[16px]">delete</span> {{ __('Delete') }}
                             </button>
                         </form>
                     </div>

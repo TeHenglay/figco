@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'FigCo') }}</title>
+    <link rel="icon" type="image/png" href="/logo/logo-figco.png">
 
     <!-- FigCo Design System Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,100..900;1,100..900&family=Inter:opsz,wght@14..32,100..900&family=Space+Grotesk:wght@300..700&family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet"/>
@@ -161,7 +162,7 @@
             <span class="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-slate-900 animate-pulse"></span>
         </div>
         <div class="flex flex-col leading-tight">
-            <span class="font-technical-xs text-[9px] text-blue-200 uppercase tracking-widest">Chat with</span>
+            <span class="font-technical-xs text-[9px] text-blue-200 uppercase tracking-widest">{{ __('Chat with') }}</span>
             <span class="font-technical-sm text-[13px] font-bold">Monika</span>
         </div>
         <span class="material-symbols-outlined text-[18px] text-blue-200 group-hover:text-white transition-colors">arrow_forward</span>
@@ -196,7 +197,7 @@
                 <span class="w-3 h-3 bg-blue-600 border border-slate-900 rounded-full animate-bounce" style="animation-delay:150ms"></span>
                 <span class="w-3 h-3 bg-blue-600 border border-slate-900 rounded-full animate-bounce" style="animation-delay:300ms"></span>
             </div>
-            <p class="font-technical-sm text-slate-900 uppercase tracking-widest" style="font-family:'Space Grotesk',sans-serif; font-size:12px;">Signing out...</p>
+            <p class="font-technical-sm text-slate-900 uppercase tracking-widest" style="font-family:'Space Grotesk',sans-serif; font-size:12px;">{{ __('Signing out...') }}</p>
         </div>
     </div>
     <script>

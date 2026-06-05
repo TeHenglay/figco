@@ -10,6 +10,12 @@ Route::get('/', function () {
     return auth()->check() ? redirect()->route('dashboard') : view('welcome');
 });
 
+Route::get('/locale/{lang}', function ($lang) {
+    abort_unless(in_array($lang, ['en', 'km']), 404);
+    session(['locale' => $lang]);
+    return redirect()->back();
+})->name('locale.switch');
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', fn () => view('dashboard'))->name('dashboard');
 
