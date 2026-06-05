@@ -33,6 +33,12 @@ class HomeworkController extends Controller
 
         $language = $validated['language'] ?? 'English';
 
+        $languageInstruction = $language === 'Khmer'
+            ? "\n\nIMPORTANT: Generate ALL output in Khmer (ភាសាខ្មែរ) only. Every title, question, instruction, and answer key must be written in Khmer script. Do not use English."
+            : "\n\nIMPORTANT: Generate ALL output in English only.";
+
+        $instructions = $validated['instructions'] . $languageInstruction;
+
         $hw = auth()->user()->homeworkRequests()->create([
             'original_filename' => $file->getClientOriginalName(),
             'file_path'         => $path,
@@ -48,7 +54,7 @@ class HomeworkController extends Controller
             $hw->id,
             $pdfBase64,
             $file->getClientOriginalName(),
-            $validated['instructions'],
+            $instructions,
             $callbackUrl,
             $language
         );
