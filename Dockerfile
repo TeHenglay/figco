@@ -15,9 +15,7 @@ COPY . .
 RUN composer install --optimize-autoloader --no-dev --no-interaction
 
 RUN php artisan storage:link || true
-RUN php artisan config:cache || true
-RUN php artisan route:cache || true
 
 EXPOSE 8000
 
-CMD php -S 0.0.0.0:${PORT:-8000} -t public
+CMD sh -c "php artisan config:cache && php artisan route:cache && php -S 0.0.0.0:$PORT -t public"
