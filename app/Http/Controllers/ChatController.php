@@ -58,9 +58,19 @@ class ChatController extends Controller
             $reply = 'Sorry, I had trouble responding. Please try again.';
         }
 
-        $assistantMessage = $conversation->messages()->create(['role' => 'assistant', 'content' => $reply]);
-
-        $conversation->touch();
+        try {
+            $assistantMessage = $conversation->messages()->create(['role' => 'assistant', 'content' => $reply]);
+            $conversation->touch();
+        } catch (\Throwable $e) {
+            \Log::error('Chat DB save error', ['error' => $e->getMessage()]);
+            return response()->json([
+                'message' => [
+                    'role'       => 'assistant',
+                    'content'    => $reply,
+                    'created_at' => now()->toISOString(),
+                ],
+            ]);
+        }
 
         return response()->json([
             'message' => [

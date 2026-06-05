@@ -26,14 +26,14 @@ class N8nService
             return 'Sorry, I had trouble responding. Please try again.';
         }
 
-        Log::info('n8n chat raw response', ['status' => $response->status(), 'body' => $response->body()]);
+        Log::info('n8n chat raw response', ['status' => $response->status(), 'body' => substr($response->body(), 0, 500)]);
 
         $data = $response->json();
 
         // n8n may return [{...}] or {...}
         $item = is_array($data) && isset($data[0]) ? $data[0] : $data;
 
-        $raw = $item['reply'] ?? $item['text'] ?? $item['response'] ?? $item['output'] ?? $item['message'] ?? null;
+        $raw = $item['reply'] ?? $item['text'] ?? $item['content'] ?? $item['response'] ?? $item['output'] ?? $item['message'] ?? null;
 
         $reply = $this->extractText($raw);
 
