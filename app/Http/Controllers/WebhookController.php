@@ -26,15 +26,26 @@ class WebhookController extends Controller
 
         $content = $request->input('homework_content', '');
 
-        $pdfPath  = $this->generatePdf($hw, $content);
-        $docxPath = $this->generateDocx($hw, $content);
-
+        // Mark completed immediately so the frontend stops polling
         $hw->update([
             'status'           => 'completed',
             'homework_content' => $content,
-            'result_pdf_path'  => $pdfPath,
-            'result_docx_path' => $docxPath,
         ]);
+
+        // Generate files — failures don't block the completed status
+        try {
+            $pdfPath = $this->generatePdf($hw, $content);
+            $hw->update(['result_pdf_path' => $pdfPath]);
+        } catch (\Throwable $e) {
+            \Log::error("Homework PDF generation failed for #{$hw->id}: " . $e->getMessage());
+        }
+
+        try {
+            $docxPath = $this->generateDocx($hw, $content);
+            $hw->update(['result_docx_path' => $docxPath]);
+        } catch (\Throwable $e) {
+            \Log::error("Homework DOCX generation failed for #{$hw->id}: " . $e->getMessage());
+        }
 
         return response()->json(['ok' => true]);
     }
