@@ -26,15 +26,26 @@ class N8nService
             return 'Sorry, I had trouble responding. Please try again.';
         }
 
-        // Try common reply keys before giving up
-        $data  = $response->json() ?? [];
-        $reply = $data['reply'] ?? $data['text'] ?? $data['response'] ?? $data['output'] ?? null;
+        Log::info('n8n chat raw response', ['status' => $response->status(), 'body' => $response->body()]);
+
+        $data = $response->json();
+
+        // n8n may return an array [{...}] or a plain object {...}
+        $item = is_array($data) && isset($data[0]) ? $data[0] : $data;
+
+        $reply = $item['reply'] ?? $item['text'] ?? $item['response'] ?? $item['output'] ?? $item['message'] ?? null;
 
         if (is_string($reply) && trim($reply) !== '') {
             return trim($reply);
         }
 
-        Log::warning('n8n chat: unexpected response format', ['body' => $response->body()]);
+        // Last resort: if the whole body is a plain non-JSON string
+        $body = trim($response->body());
+        if ($body !== '' && !str_starts_with($body, '{') && !str_starts_with($body, '[')) {
+            return $body;
+        }
+
+        Log::warning('n8n chat: could not extract reply', ['data' => $data]);
         return 'Sorry, I had trouble responding. Please try again.';
     }
 
