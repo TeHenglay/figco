@@ -80,14 +80,56 @@ class HomeworkController extends Controller
         abort_if($homework->status !== 'completed', 404);
         abort_unless(in_array($format, ['pdf', 'docx']), 404);
 
-        $path = $format === 'pdf' ? $homework->result_pdf_path : $homework->result_docx_path;
-        abort_if(!$path || !Storage::disk('local')->exists($path), 404);
+        $content  = $homework->homework_content ?? '';
+        $basename = pathinfo($homework->original_filename, PATHINFO_FILENAME);
 
-        $mime = $format === 'pdf' ? 'application/pdf'
-            : 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+        if ($format === 'pdf') {
+            return $this->streamPdf($basename, $content);
+        }
 
-        return Storage::disk('local')->download($path, $homework->original_filename . '.' . $format, [
-            'Content-Type' => $mime,
+        return $this->streamDocx($basename, $content);
+    }
+
+    private function streamPdf(string $title, string $content): \Symfony\Component\HttpFoundation\Response
+    {
+        $safeTitle = htmlspecialchars($title);
+        $html = <<<HTML
+        <!DOCTYPE html><html><head><meta charset="utf-8">
+        <style>
+            body { font-family: DejaVu Sans, sans-serif; font-size: 12px; color: #111; line-height: 1.6; margin: 40px; }
+            h1,h2,h3 { color: #1e293b; } h1 { font-size: 20px; border-bottom: 2px solid #0058be; padding-bottom: 8px; }
+            p { margin: 8px 0; }
+        </style></head><body><h1>{$safeTitle}</h1>{$content}</body></html>
+        HTML;
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadHTML($html);
+
+        return response($pdf->output(), 200, [
+            'Content-Type'        => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="' . $title . '.pdf"',
+        ]);
+    }
+
+    private function streamDocx(string $title, string $content): \Symfony\Component\HttpFoundation\StreamedResponse
+    {
+        $phpWord = new \PhpOffice\PhpWord\PhpWord();
+        $section = $phpWord->addSection();
+        $section->addTitle($title, 1);
+        $section->addTextBreak(1);
+
+        foreach (explode("\n", strip_tags($content)) as $line) {
+            $line = trim($line);
+            $line === '' ? $section->addTextBreak(1) : $section->addText(htmlspecialchars_decode($line));
+        }
+
+        $tmpPath = tempnam(sys_get_temp_dir(), 'hw_') . '.docx';
+        \PhpOffice\PhpWord\IOFactory::createWriter($phpWord, 'Word2007')->save($tmpPath);
+
+        return response()->streamDownload(function () use ($tmpPath) {
+            readfile($tmpPath);
+            @unlink($tmpPath);
+        }, $title . '.docx', [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
         ]);
     }
 
