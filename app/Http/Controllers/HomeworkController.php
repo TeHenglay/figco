@@ -42,12 +42,14 @@ class HomeworkController extends Controller
 
         $pdfBase64 = base64_encode(Storage::disk('local')->get($path));
 
+        $callbackUrl = rtrim(config('app.url'), '/') . '/webhook/n8n/homework';
+
         $n8n->triggerHomework(
             $hw->id,
             $pdfBase64,
             $file->getClientOriginalName(),
             $validated['instructions'],
-            route('webhook.n8n.homework'),
+            $callbackUrl,
             $language
         );
 
