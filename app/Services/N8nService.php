@@ -7,25 +7,25 @@ use Illuminate\Support\Facades\Log;
 
 class N8nService
 {
-    public function callChatSync(int $conversationId, int $userId, string $message, array $history, ?string $imageBase64 = null, ?string $imageMimeType = null): string
+    public function callChatSync(int $conversationId, int $userId, string $message, array $history, ?string $imageBase64 = null, ?string $imageMimeType = null, bool $sussyMode = false): string
     {
-        $systemInstruction = 'You are Monika, a friendly AI teaching assistant. Keep your replies concise and to the point — avoid long paragraphs. Use short sentences. Only give detailed or structured output (like lesson plans or quizzes) when the user explicitly asks for a document or full plan.';
-
         $payload = [
-            'conversation_id'    => $conversationId,
-            'user_id'            => $userId,
-            'message'            => $message,
-            'history'            => $history,
-            'system_instruction' => $systemInstruction,
+            'conversation_id' => $conversationId,
+            'user_id'         => $userId,
+            'message'         => $message,
+            'history'         => $history,
+            'sussy_mode'      => $sussyMode ? '1' : '0',
         ];
 
         if ($imageBase64 !== null) {
-            $payload['image_base64']   = $imageBase64;
+            $payload['image_base64']    = $imageBase64;
             $payload['image_mime_type'] = $imageMimeType ?? 'image/jpeg';
         }
 
+        $url = config('services.n8n.chat_webhook_url');
+
         try {
-            $response = Http::timeout(90)->withoutVerifying()->post(config('services.n8n.chat_webhook_url'), $payload);
+            $response = Http::timeout(90)->withoutVerifying()->post($url, $payload);
         } catch (\Throwable $e) {
             Log::error('n8n chat connection error', ['error' => $e->getMessage()]);
             return 'Sorry, I had trouble responding. Please try again.';
@@ -83,6 +83,30 @@ class N8nService
         }
 
         return null;
+    }
+
+    public function refineHomework(string $currentContent, string $instruction): string
+    {
+        try {
+            $response = Http::timeout(90)->withoutVerifying()->post(config('services.n8n.refine_webhook_url'), [
+                'homework_content' => $currentContent,
+                'instruction'      => $instruction,
+            ]);
+        } catch (\Throwable $e) {
+            Log::error('n8n refine connection error', ['error' => $e->getMessage()]);
+            return '';
+        }
+
+        if ($response->failed()) {
+            Log::error('n8n refine webhook failed', ['status' => $response->status()]);
+            return '';
+        }
+
+        $data = $response->json();
+        $item = is_array($data) && isset($data[0]) ? $data[0] : $data;
+        $reply = $item['reply'] ?? $item['text'] ?? $item['output'] ?? null;
+
+        return (is_string($reply) && trim($reply) !== '') ? trim($reply) : '';
     }
 
     public function triggerHomework(int $homeworkId, string $pdfBase64, string $filename, string $instructions, string $callbackUrl, string $language = 'English'): void

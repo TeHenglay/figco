@@ -1,6 +1,7 @@
 <x-app-layout>
 
 <div class="flex flex-col h-[calc(100vh-64px)] md:h-screen -m-8"
+     :class="sussyMode ? 'sussy-mode' : ''"
      x-data="{ ...chatApp({{ $conversation->id }}, '{{ csrf_token() }}'), monikaModal: false }"
      x-init="scrollToBottom()">
 
@@ -94,37 +95,58 @@
     </div>
 
     <!-- Chat Header -->
-    <div class="flex items-center gap-4 px-4 py-3 bg-white border-b-4 border-slate-900 flex-shrink-0">
-        <a href="{{ route('chat.index') }}" class="w-9 h-9 border-2 border-slate-900 flex items-center justify-center hover:bg-surface-container transition-colors flex-shrink-0">
+    <div class="chat-header flex items-center gap-4 px-4 py-3 border-b-4 flex-shrink-0 transition-colors duration-300">
+        <a href="{{ route('chat.index') }}" class="back-btn w-9 h-9 border-2 flex items-center justify-center transition-colors flex-shrink-0">
             <span class="material-symbols-outlined text-[20px]">arrow_back</span>
         </a>
         <!-- Avatar with online ring -->
         <div class="relative flex-shrink-0 cursor-pointer group" @click="monikaModal = true">
             <img src="/images/monika.jpg" alt="Monika"
                  class="w-14 h-14 border-[3px] border-slate-900 object-cover shadow-[3px_3px_0px_0px_rgba(30,41,59,1)] group-hover:opacity-85 transition-opacity"
+                 :class="sussyMode ? 'border-pink-500 shadow-[0_0_12px_rgba(236,72,153,0.5)]' : 'border-slate-900'"
                  style="border-radius:50%">
-            <span class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full"></span>
+            <span class="absolute bottom-0 right-0 w-3.5 h-3.5 border-2 border-white rounded-full"
+                  :class="sussyMode ? 'bg-pink-500' : 'bg-green-500'"></span>
         </div>
         <div class="flex-1 min-w-0">
-            <h2 class="text-lg font-bold text-slate-900 leading-tight truncate">Monika</h2>
-            <p class="font-technical-xs text-technical-xs text-slate-400 truncate">{{ $conversation->title }}</p>
+            <h2 class="header-name text-lg font-bold leading-tight truncate transition-colors duration-300">
+                <span x-text="sussyMode ? 'Monika 😏' : 'Monika'">Monika</span>
+            </h2>
+            <p class="header-sub font-technical-xs text-technical-xs truncate transition-colors duration-300">{{ $conversation->title }}</p>
         </div>
-        <div class="flex items-center gap-2 px-3 py-1.5 border-2 border-slate-900 bg-green-50 font-technical-xs text-technical-xs text-green-700">
-            <span class="w-2 h-2 bg-green-500 border border-slate-900 block rounded-full animate-pulse"></span>
-            Monika Online
+        <!-- Sussy Mode Toggle -->
+        <button @click="sussyMode = !sussyMode"
+                :class="sussyMode
+                    ? 'bg-pink-600 border-pink-400 text-white shadow-[0_0_14px_rgba(236,72,153,0.7)] hover:bg-pink-700'
+                    : 'border-slate-900 bg-surface-container-low text-slate-700 hover:bg-pink-50 hover:border-pink-400'"
+                class="flex items-center gap-1.5 px-3 py-1.5 border-2 font-technical-xs text-technical-xs transition-all duration-300 flex-shrink-0">
+            <span x-text="sussyMode ? 'Sussy ON' : 'Sussy Mode'">Sussy Mode</span>
+        </button>
+        <div class="online-badge flex items-center gap-2 px-3 py-1.5 border-2 font-technical-xs text-technical-xs transition-colors duration-300"
+             :class="sussyMode ? 'border-pink-500 bg-pink-950 text-pink-400' : 'border-slate-900 bg-green-50 text-green-700'">
+            <span class="w-2 h-2 border block rounded-full animate-pulse"
+                  :class="sussyMode ? 'bg-pink-500 border-pink-300' : 'bg-green-500 border-slate-900'"></span>
+            <span x-text="sussyMode ? 'Sussy Mode 🔥' : 'Monika Online'">Monika Online</span>
         </div>
     </div>
 
     <!-- Messages Area -->
-    <div class="flex-1 overflow-y-auto px-4 md:px-8 py-6 space-y-6 bg-surface-container-low" id="messages-container">
+    <div class="messages-area flex-1 overflow-y-auto px-4 md:px-8 py-6 space-y-6 transition-colors duration-300" id="messages-container">
 
         <!-- Monika intro if no messages -->
         @if($messages->count() === 0)
-        <div class="flex justify-start gap-3">
+        <div class="flex justify-start gap-3" x-show="!sussyMode">
             <img src="/images/monika.jpg" alt="Monika" class="w-10 h-10 border-2 border-slate-900 object-cover flex-shrink-0 self-end" style="border-radius:50%">
-            <div class="max-w-[75%] bg-white border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] px-4 py-3">
-                <p class="font-technical-xs text-technical-xs text-blue-600 font-bold mb-1">Monika</p>
+            <div class="max-w-[75%] msg-assistant bg-white border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] px-4 py-3">
+                <p class="font-technical-xs text-technical-xs text-blue-600 font-bold mb-1 msg-sender">Monika</p>
                 <p class="font-body-md text-body-md text-sm">Hey! I'm Monika, your AI teaching assistant. What can I help you with today?</p>
+            </div>
+        </div>
+        <div class="flex justify-start gap-3" x-show="sussyMode" x-cloak>
+            <img src="/images/monika.jpg" alt="Monika" class="w-10 h-10 border-2 border-pink-500 object-cover flex-shrink-0 self-end shadow-[0_0_8px_rgba(236,72,153,0.5)]" style="border-radius:50%">
+            <div class="max-w-[75%] msg-assistant border-2 px-4 py-3">
+                <p class="font-technical-xs text-technical-xs font-bold mb-1 msg-sender">Monika 😏</p>
+                <p class="font-body-md text-body-md text-sm">Hey babe~ I'm Monika, your AI teaching assistant — but in this mode I'm a little extra 🔥 What do you need today?</p>
             </div>
         </div>
         @endif
@@ -135,11 +157,10 @@
                 @if($msg->role === 'assistant')
                     <img src="/images/monika.jpg" alt="Monika" class="w-10 h-10 border-2 border-slate-900 object-cover flex-shrink-0 self-end" style="border-radius:50%">
                 @endif
-                <div class="max-w-[75%] {{ $msg->role === 'user'
-                    ? 'bg-blue-600 text-white border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(30,41,59,1)]'
-                    : 'bg-white border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(30,41,59,1)]' }} px-4 py-3">
+                <div class="max-w-[75%] shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] px-4 py-3 border-2
+                    {{ $msg->role === 'user' ? 'msg-user bg-blue-600 text-white border-slate-900' : 'msg-assistant bg-white border-slate-900' }}">
                     @if($msg->role === 'assistant')
-                        <p class="font-technical-xs text-technical-xs text-blue-600 font-bold mb-1">Monika</p>
+                        <p class="font-technical-xs text-technical-xs text-blue-600 font-bold mb-1 msg-sender">Monika</p>
                     @endif
                     @if($msg->role === 'assistant')
                         <div class="nova-markdown" data-md="{{ e($msg->content) }}"></div>
@@ -160,13 +181,19 @@
         <template x-for="msg in dynamicMessages" :key="msg.id">
             <div :class="msg.role === 'user' ? 'flex justify-end gap-3' : 'flex justify-start gap-3'">
                 <template x-if="msg.role === 'assistant'">
-                    <img src="/images/monika.jpg" alt="Monika" class="w-10 h-10 border-2 border-slate-900 object-cover flex-shrink-0 self-end" style="border-radius:50%">
+                    <img src="/images/monika.jpg" alt="Monika"
+                         class="w-10 h-10 object-cover flex-shrink-0 self-end border-2 transition-colors"
+                         :class="sussyMode ? 'border-pink-500 shadow-[0_0_8px_rgba(236,72,153,0.4)]' : 'border-slate-900'"
+                         style="border-radius:50%">
                 </template>
-                <div :class="msg.role === 'user'
-                    ? 'max-w-[75%] bg-blue-600 text-white border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] px-4 py-3'
-                    : 'max-w-[75%] bg-white border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] px-4 py-3'">
+                <div class="max-w-[75%] shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] px-4 py-3 border-2 transition-colors"
+                     :class="msg.role === 'user'
+                        ? (sussyMode ? 'msg-user bg-pink-700 text-white border-pink-400' : 'msg-user bg-blue-600 text-white border-slate-900')
+                        : (sussyMode ? 'msg-assistant border-purple-600' : 'msg-assistant bg-white border-slate-900')">
                     <template x-if="msg.role === 'assistant'">
-                        <p class="font-technical-xs text-technical-xs text-blue-600 font-bold mb-1">Monika</p>
+                        <p class="font-technical-xs text-technical-xs font-bold mb-1 msg-sender"
+                           :class="sussyMode ? 'text-pink-400' : 'text-blue-600'"
+                           x-text="sussyMode ? 'Monika 😏' : 'Monika'"></p>
                     </template>
                     <template x-if="msg.role === 'assistant'">
                         <div class="nova-markdown" x-html="renderMarkdown(msg.content)"></div>
@@ -189,8 +216,10 @@
                     </template>
                 </div>
                 <template x-if="msg.role === 'user'">
-                    <div class="w-10 h-10 border-2 border-slate-900 bg-primary-fixed flex items-center justify-center flex-shrink-0 self-end">
-                        <span class="material-symbols-outlined text-on-primary-fixed text-[18px]">person</span>
+                    <div class="w-10 h-10 border-2 flex items-center justify-center flex-shrink-0 self-end transition-colors"
+                         :class="sussyMode ? 'border-pink-500 bg-pink-950' : 'border-slate-900 bg-primary-fixed'">
+                        <span class="material-symbols-outlined text-[18px]"
+                              :class="sussyMode ? 'text-pink-300' : 'text-on-primary-fixed'">person</span>
                     </div>
                 </template>
             </div>
@@ -198,13 +227,22 @@
 
         <!-- Typing indicator -->
         <div x-show="loading" x-cloak class="flex justify-start gap-3">
-            <img src="/images/monika.jpg" alt="Monika" class="w-10 h-10 border-2 border-slate-900 object-cover flex-shrink-0" style="border-radius:50%">
-            <div class="bg-white border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] px-4 py-3 flex flex-col gap-1">
-                <p class="font-technical-xs text-technical-xs text-blue-600 font-bold">Monika</p>
+            <img src="/images/monika.jpg" alt="Monika"
+                 class="w-10 h-10 object-cover flex-shrink-0 border-2 transition-colors"
+                 :class="sussyMode ? 'border-pink-500' : 'border-slate-900'"
+                 style="border-radius:50%">
+            <div class="border-2 shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] px-4 py-3 flex flex-col gap-1 transition-colors"
+                 :class="sussyMode ? 'msg-assistant border-purple-600' : 'bg-white border-slate-900'">
+                <p class="font-technical-xs text-technical-xs font-bold msg-sender transition-colors"
+                   :class="sussyMode ? 'text-pink-400' : 'text-blue-600'"
+                   x-text="sussyMode ? 'Monika 😏' : 'Monika'"></p>
                 <div class="flex items-center gap-1">
-                    <span class="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay:0ms"></span>
-                    <span class="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay:150ms"></span>
-                    <span class="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay:300ms"></span>
+                    <span class="w-2 h-2 rounded-full animate-bounce transition-colors"
+                          :class="sussyMode ? 'bg-pink-500' : 'bg-slate-400'" style="animation-delay:0ms"></span>
+                    <span class="w-2 h-2 rounded-full animate-bounce transition-colors"
+                          :class="sussyMode ? 'bg-pink-500' : 'bg-slate-400'" style="animation-delay:150ms"></span>
+                    <span class="w-2 h-2 rounded-full animate-bounce transition-colors"
+                          :class="sussyMode ? 'bg-pink-500' : 'bg-slate-400'" style="animation-delay:300ms"></span>
                 </div>
             </div>
         </div>
@@ -213,23 +251,33 @@
     </div>
 
     <!-- Quick Prompts -->
-    <div class="px-4 md:px-8 py-2 bg-white border-t-2 border-dashed border-slate-200 flex gap-2 overflow-x-auto flex-shrink-0">
-        @foreach([
-            '📝 Help me write a lesson plan',
-            '❓ Create quiz questions',
-            '💡 Give me activity ideas',
-            '📖 Explain this concept simply',
-            '✅ Review my lesson objective',
-        ] as $prompt)
-            <button @click="input = '{{ $prompt }}'; $refs.msgInput.focus()"
-                class="flex-shrink-0 px-3 py-1.5 border-2 border-slate-900 bg-surface-container-low font-technical-xs text-technical-xs text-slate-700 hover:bg-blue-50 hover:border-blue-600 hover:text-blue-700 transition-colors whitespace-nowrap">
-                {{ $prompt }}
-            </button>
-        @endforeach
+    <div class="quick-prompts-bar px-4 md:px-8 py-2 border-t-2 border-dashed flex gap-2 overflow-x-auto flex-shrink-0 transition-colors duration-300">
+        <!-- Normal mode prompts -->
+        <template x-if="!sussyMode">
+            <div class="flex gap-2">
+                @foreach(['📝 Help me write a lesson plan', '❓ Create quiz questions', '💡 Give me activity ideas', '📖 Explain this concept simply', '✅ Review my lesson objective'] as $prompt)
+                    <button @click="input = '{{ $prompt }}'; $refs.msgInput.focus()"
+                        class="flex-shrink-0 px-3 py-1.5 border-2 border-slate-900 bg-surface-container-low font-technical-xs text-technical-xs text-slate-700 hover:bg-blue-50 hover:border-blue-600 hover:text-blue-700 transition-colors whitespace-nowrap">
+                        {{ $prompt }}
+                    </button>
+                @endforeach
+            </div>
+        </template>
+        <!-- Sussy mode prompts -->
+        <template x-if="sussyMode">
+            <div class="flex gap-2">
+                @foreach(['🔥 Spice up my lesson plan', '😏 Make my quiz extra fun', '💅 Rizz up this explanation', '✨ Give me a vibe check on my lesson', '🫦 Explain it but make it fun'] as $prompt)
+                    <button @click="input = '{{ $prompt }}'; $refs.msgInput.focus()"
+                        class="sussy-prompt flex-shrink-0 px-3 py-1.5 border-2 font-technical-xs text-technical-xs whitespace-nowrap transition-colors">
+                        {{ $prompt }}
+                    </button>
+                @endforeach
+            </div>
+        </template>
     </div>
 
     <!-- Input Bar -->
-    <div class="px-4 md:px-8 py-4 bg-white border-t-4 border-slate-900 flex-shrink-0">
+    <div class="input-bar px-4 md:px-8 py-4 border-t-4 flex-shrink-0 transition-colors duration-300">
         <!-- File preview strip -->
         <div x-show="imageFile" x-cloak class="mb-3 flex items-center gap-3 px-3 py-2 border-2 border-blue-600 bg-blue-50">
             <!-- Image preview -->
@@ -255,15 +303,20 @@
                     x-model="input"
                     @keydown.enter.prevent="if (!$event.shiftKey) sendMessage()"
                     rows="1"
-                    placeholder="Ask Monika anything about your lesson..."
-                    class="w-full px-4 py-3 bg-surface-container-low border-2 border-slate-900 font-body-md text-body-md text-sm focus:outline-none focus:border-blue-600 focus:shadow-[4px_4px_0px_0px_#005ac2] transition-shadow resize-none placeholder-slate-400"
+                    :placeholder="sussyMode ? 'Ask Monika anything, babe~ 😏' : 'Ask Monika anything about your lesson...'"
+                    class="msg-textarea w-full px-4 py-3 border-2 font-body-md text-body-md text-sm focus:outline-none transition-shadow resize-none"
+                    :class="sussyMode
+                        ? 'bg-[#14002a] border-purple-700 text-pink-100 placeholder-purple-700 focus:border-pink-500 focus:shadow-[4px_4px_0px_0px_#9333ea]'
+                        : 'bg-surface-container-low border-slate-900 placeholder-slate-400 focus:border-blue-600 focus:shadow-[4px_4px_0px_0px_#005ac2]'"
                     style="min-height: 48px; max-height: 200px; overflow-y: auto;"
                     @input="$el.style.height = 'auto'; $el.style.height = $el.scrollHeight + 'px'"
                 ></textarea>
             </div>
             <!-- Image attach button -->
             <button type="button" @click="$refs.imgInput.click()"
-                :class="imageFile ? 'border-blue-600 bg-blue-50 text-blue-600' : 'border-slate-900 bg-surface-container-low text-slate-500 hover:bg-slate-100'"
+                :class="imageFile
+                    ? (sussyMode ? 'border-pink-500 bg-pink-950 text-pink-400' : 'border-blue-600 bg-blue-50 text-blue-600')
+                    : (sussyMode ? 'border-purple-700 bg-[#14002a] text-purple-400 hover:border-pink-500' : 'border-slate-900 bg-surface-container-low text-slate-500 hover:bg-slate-100')"
                 class="px-3 border-2 transition-colors self-end flex items-center justify-center"
                 style="min-height: 48px;" title="Attach image or PDF">
                 <span class="material-symbols-outlined text-[20px]">attach_file</span>
@@ -271,17 +324,43 @@
             <input type="file" x-ref="imgInput" accept="image/*,application/pdf,.pdf" class="hidden" @change="onImageSelect($event)">
             <button type="submit"
                 :disabled="loading || (!input.trim() && !imageFile)"
-                class="px-5 py-3 bg-blue-600 text-white border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all font-technical-xs text-technical-xs disabled:opacity-40 disabled:cursor-not-allowed disabled:translate-x-0 disabled:translate-y-0 disabled:shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] flex items-center gap-2 self-end">
+                :class="sussyMode
+                    ? 'bg-pink-600 border-pink-400 shadow-[4px_4px_0px_0px_rgba(236,72,153,0.5)] hover:bg-pink-700 disabled:shadow-[4px_4px_0px_0px_rgba(236,72,153,0.5)]'
+                    : 'bg-blue-600 border-slate-900 shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none disabled:shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] disabled:translate-x-0 disabled:translate-y-0'"
+                class="px-5 py-3 text-white border-2 transition-all font-technical-xs text-technical-xs disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-2 self-end">
                 <span class="material-symbols-outlined text-[20px]" x-text="loading ? 'hourglass_top' : 'send'">send</span>
-                <span x-text="loading ? 'Thinking...' : 'Send'">Send</span>
+                <span x-text="loading ? (sussyMode ? 'Thinking~ 💅' : 'Thinking...') : 'Send'">Send</span>
             </button>
         </form>
-        <p class="font-technical-xs text-technical-xs text-slate-400 mt-2">Shift+Enter for new line · Attach images or PDFs for Monika to analyze</p>
+        <p class="font-technical-xs text-technical-xs mt-2 transition-colors"
+           :class="sussyMode ? 'text-purple-600' : 'text-slate-400'"
+           x-text="sussyMode ? 'Shift+Enter for new line · Sussy Mode is ON 🔥' : 'Shift+Enter for new line · Attach images or PDFs for Monika to analyze'">
+            Shift+Enter for new line · Attach images or PDFs for Monika to analyze
+        </p>
     </div>
 
 </div>
 
 <style>
+/* ===== Sussy Mode Dark Theme ===== */
+.sussy-mode { background: #07000f; }
+.sussy-mode .chat-header { background: #0d0520; border-bottom-color: #ec4899; }
+.sussy-mode .chat-header .back-btn { border-color: #7c3aed; color: #d8b4fe; }
+.sussy-mode .chat-header .back-btn:hover { background: #1a0a2e; }
+.sussy-mode .chat-header .header-name { color: #fce7f3; }
+.sussy-mode .chat-header .header-sub { color: #a855f7; }
+.sussy-mode .messages-area { background: #0a0014; }
+.sussy-mode .msg-assistant { background: #130a25 !important; border-color: #7c3aed !important; color: #ede9fe !important; }
+.sussy-mode .msg-assistant .nova-markdown { color: #ede9fe; }
+.sussy-mode .msg-assistant .nova-markdown code { background: #1e0a3a; border-color: #6d28d9; color: #e9d5ff; }
+.sussy-mode .msg-assistant .nova-markdown pre { background: #1e0a3a; border-color: #6d28d9; }
+.sussy-mode .msg-user { background: #9d174d !important; border-color: #f472b6 !important; }
+.sussy-mode .quick-prompts-bar { background: #0a0018; border-color: #4a1460; }
+.sussy-mode .sussy-prompt { background: #14002a; border-color: #6d28d9; color: #d8b4fe; }
+.sussy-mode .sussy-prompt:hover { background: #1e0a3a; border-color: #ec4899; color: #fce7f3; }
+.sussy-mode .input-bar { background: #0a0018; border-top-color: #ec4899; }
+
+/* ===== Chat Markdown styles ===== */
 .nova-markdown { font-size: 0.875rem; line-height: 1.6; color: #1e293b; }
 .nova-markdown p { margin: 0 0 0.5rem; }
 .nova-markdown p:last-child { margin-bottom: 0; }
@@ -321,6 +400,7 @@ function chatApp(conversationId, csrfToken) {
         imageFile: null,
         imagePreview: null,
         fileType: null,
+        sussyMode: false,
 
         onImageSelect(event) {
             const file = event.target.files[0];
@@ -413,6 +493,8 @@ function chatApp(conversationId, csrfToken) {
                 const formData = new FormData();
                 formData.append('message', text);
                 if (capturedFile) formData.append('image', capturedFile);
+                formData.append('sussy_mode', this.sussyMode ? '1' : '0');
+                console.log('[chat] sussy_mode =', this.sussyMode);
 
                 const res = await fetch(`/chat/${conversationId}/message`, {
                     method: 'POST',

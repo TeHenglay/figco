@@ -99,9 +99,10 @@
 
     @elseif($homework->status === 'completed')
         <!-- Completed State -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6"
+             x-data="homeworkRefine('{{ route('homework.refine', $homework) }}', '{{ csrf_token() }}')">
 
-            <!-- Sidebar: info + downloads -->
+            <!-- Sidebar: info + downloads + refine -->
             <div class="space-y-4">
                 <!-- Download Buttons -->
                 <div class="bg-white border-2 border-slate-900 pixel-shadow">
@@ -123,6 +124,59 @@
                                 Download DOCX
                             </a>
                         </div>
+                    </div>
+                </div>
+
+                <!-- AI Refine Panel -->
+                <div class="bg-white border-2 border-slate-900 pixel-shadow">
+                    <div class="h-1.5 bg-blue-500 border-b-2 border-slate-900"></div>
+                    <div class="p-5">
+                        <h3 class="font-technical-sm text-technical-sm text-slate-700 uppercase tracking-wider mb-3 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[18px] text-blue-600">auto_fix_high</span>
+                            Refine with AI
+                        </h3>
+
+                        <!-- Quick suggestion chips -->
+                        <div class="flex flex-wrap gap-1.5 mb-3">
+                            @foreach([
+                                'Add 5 more questions',
+                                'Add an answer key',
+                                'Make questions harder',
+                                'Add a vocabulary section',
+                                'Simplify the language',
+                                'Add a bonus challenge question',
+                            ] as $chip)
+                                <button type="button"
+                                        @click="instruction = '{{ $chip }}'"
+                                        class="px-2 py-1 text-[11px] border border-slate-300 bg-slate-50 text-slate-600 hover:border-blue-500 hover:text-blue-600 hover:bg-blue-50 transition-colors font-medium">
+                                    {{ $chip }}
+                                </button>
+                            @endforeach
+                        </div>
+
+                        <textarea
+                            x-model="instruction"
+                            rows="3"
+                            placeholder="Tell AI how to improve this homework..."
+                            class="w-full px-3 py-2 border-2 border-slate-900 bg-surface-container-low font-body-md text-body-md text-sm focus:outline-none focus:border-blue-600 resize-none placeholder-slate-400 mb-3"
+                        ></textarea>
+
+                        <!-- Error message -->
+                        <p x-show="error" x-cloak x-text="error"
+                           class="text-xs text-red-600 bg-red-50 border border-red-200 px-3 py-2 mb-3"></p>
+
+                        <!-- Success flash -->
+                        <p x-show="success" x-cloak
+                           class="text-xs text-green-700 bg-green-50 border border-green-300 px-3 py-2 mb-3">
+                            Homework updated successfully!
+                        </p>
+
+                        <button @click="refine()"
+                                :disabled="loading || !instruction.trim()"
+                                class="w-full flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white border-2 border-slate-900 pixel-shadow font-technical-xs text-technical-xs uppercase font-bold transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none disabled:opacity-40 disabled:cursor-not-allowed disabled:translate-x-0 disabled:translate-y-0">
+                            <span class="material-symbols-outlined text-[18px]" x-text="loading ? 'hourglass_top' : 'auto_fix_high'">auto_fix_high</span>
+                            <span x-text="loading ? 'Refining...' : 'Apply Changes'">Apply Changes</span>
+                        </button>
                     </div>
                 </div>
 
@@ -152,15 +206,77 @@
                             <span class="material-symbols-outlined text-[18px] text-blue-600">preview</span>
                             Homework Preview
                         </h3>
+                        <!-- Refining overlay indicator -->
+                        <div x-show="loading" x-cloak class="flex items-center gap-2 font-technical-xs text-technical-xs text-blue-600">
+                            <span class="material-symbols-outlined text-[16px] animate-spin">progress_activity</span>
+                            AI is refining...
+                        </div>
                     </div>
-                    <div class="p-6 prose prose-sm max-w-none font-body-md text-body-md text-sm leading-relaxed overflow-auto max-h-[70vh]"
-                         style="font-family: 'Inter', 'Kantumruy Pro', sans-serif;">
-                        {!! $homework->homework_content !!}
+                    <div class="relative">
+                        <!-- Loading overlay -->
+                        <div x-show="loading" x-cloak
+                             class="absolute inset-0 bg-white/70 z-10 flex items-center justify-center">
+                            <div class="flex flex-col items-center gap-3">
+                                <div class="w-10 h-10 border-4 border-slate-900 border-t-blue-600 rounded-full animate-spin"></div>
+                                <p class="font-technical-xs text-technical-xs text-slate-600">Applying your changes...</p>
+                            </div>
+                        </div>
+                        <div id="homework-preview"
+                             class="p-6 prose prose-sm max-w-none font-body-md text-body-md text-sm leading-relaxed overflow-auto max-h-[70vh]"
+                             style="font-family: 'Inter', 'Kantumruy Pro', sans-serif;">
+                            {!! $homework->homework_content !!}
+                        </div>
                     </div>
                 </div>
             </div>
 
         </div>
+
+        <script>
+        function homeworkRefine(refineUrl, csrfToken) {
+            return {
+                instruction: '',
+                loading: false,
+                error: '',
+                success: false,
+
+                async refine() {
+                    if (!this.instruction.trim() || this.loading) return;
+                    this.loading = true;
+                    this.error = '';
+                    this.success = false;
+
+                    try {
+                        const res = await fetch(refineUrl, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': csrfToken,
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ instruction: this.instruction }),
+                        });
+
+                        const data = await res.json();
+
+                        if (!res.ok) {
+                            this.error = data.error || 'Something went wrong. Please try again.';
+                            return;
+                        }
+
+                        document.getElementById('homework-preview').innerHTML = data.content;
+                        this.instruction = '';
+                        this.success = true;
+                        setTimeout(() => { this.success = false; }, 3000);
+                    } catch (e) {
+                        this.error = 'Network error. Please try again.';
+                    } finally {
+                        this.loading = false;
+                    }
+                }
+            }
+        }
+        </script>
     @endif
 
 </x-app-layout>

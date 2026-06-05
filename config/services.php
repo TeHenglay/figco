@@ -37,7 +37,9 @@ return [
 
     'n8n' => [
         'chat_webhook_url'     => env('N8N_CHAT_WEBHOOK_URL'),
+        'sussy_webhook_url'    => env('N8N_SUSSY_WEBHOOK_URL', 'https://n8n.serey.io/webhook/teacher-chat-sussy'),
         'homework_webhook_url' => env('N8N_HOMEWORK_WEBHOOK_URL'),
+        'refine_webhook_url'   => env('N8N_REFINE_WEBHOOK_URL', 'https://n8n.serey.io/webhook/homework-refine'),
         'callback_secret'      => env('N8N_CALLBACK_SECRET', 'changeme'),
     ],
 

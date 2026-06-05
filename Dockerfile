@@ -11,8 +11,11 @@ RUN docker-php-ext-install pdo pdo_pgsql mbstring xml bcmath gd zip
 
 # Copy Noto Khmer font to app storage for DomPDF
 RUN mkdir -p /app/storage/fonts && \
-    find /usr/share/fonts -name "*Khmer*" -o -name "*khmer*" 2>/dev/null | head -1 | \
-    xargs -I{} cp {} /app/storage/fonts/NotoKhmer.ttf || true
+    find /usr/share/fonts -iname "*khmer*regular*" -o -iname "*khmer*" 2>/dev/null | grep -i "\.ttf\|\.otf" | head -1 | \
+    xargs -I{} cp {} /app/storage/fonts/NotoKhmer.ttf 2>/dev/null || \
+    find /usr/share/fonts -iname "*.ttf" 2>/dev/null | head -1 | \
+    xargs -I{} cp {} /app/storage/fonts/NotoKhmer.ttf 2>/dev/null || true
+RUN ls /app/storage/fonts/ || true
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 

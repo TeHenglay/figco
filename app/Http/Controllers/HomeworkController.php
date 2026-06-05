@@ -86,6 +86,26 @@ class HomeworkController extends Controller
         return response()->json(['ok' => true]);
     }
 
+    public function refine(Request $request, HomeworkRequest $homework, N8nService $n8n)
+    {
+        abort_if($homework->user_id !== auth()->id(), 403);
+        abort_if($homework->status !== 'completed', 422);
+
+        $validated = $request->validate([
+            'instruction' => 'required|string|max:1000',
+        ]);
+
+        $updated = $n8n->refineHomework($homework->homework_content ?? '', $validated['instruction']);
+
+        if ($updated === '') {
+            return response()->json(['error' => 'AI refinement failed. Please try again.'], 500);
+        }
+
+        $homework->update(['homework_content' => $updated]);
+
+        return response()->json(['content' => $updated]);
+    }
+
     public function download(HomeworkRequest $homework, string $format)
     {
         abort_if($homework->user_id !== auth()->id(), 403);
@@ -113,19 +133,26 @@ class HomeworkController extends Controller
         $fontFamily    = "'DejaVu Sans', sans-serif";
 
         if ($hasKhmer && file_exists($khmerFontPath)) {
-            $khmerFontFace = '@font-face { font-family: "NotoKhmer"; src: url("' . $khmerFontPath . '") format("truetype"); }';
-            $fontFamily    = '"NotoKhmer", "DejaVu Sans", sans-serif';
+            // Register font for ALL weights so bold/strong elements don't fall back
+            $khmerFontFace = '
+                @font-face { font-family: "NotoKhmer"; src: url("' . $khmerFontPath . '") format("truetype"); font-weight: normal; font-style: normal; }
+                @font-face { font-family: "NotoKhmer"; src: url("' . $khmerFontPath . '") format("truetype"); font-weight: bold; font-style: normal; }
+                @font-face { font-family: "NotoKhmer"; src: url("' . $khmerFontPath . '") format("truetype"); font-weight: 100 900; font-style: normal; }
+            ';
+            $fontFamily = '"NotoKhmer", "DejaVu Sans", sans-serif';
         }
 
         $html = <<<HTML
         <!DOCTYPE html><html><head><meta charset="utf-8">
         <style>
             {$khmerFontFace}
-            body { font-family: {$fontFamily}; font-size: 12px; color: #111; line-height: 2; margin: 40px; }
-            h1,h2,h3 { color: #1e293b; }
+            * { font-family: {$fontFamily}; }
+            body { font-size: 12px; color: #111; line-height: 2.2; margin: 40px; }
+            h1,h2,h3 { color: #1e293b; font-family: {$fontFamily}; }
             h1 { font-size: 20px; border-bottom: 2px solid #0058be; padding-bottom: 8px; margin-bottom: 16px; }
             h2 { font-size: 16px; margin-top: 20px; }
             h3 { font-size: 14px; }
+            strong, b { font-family: {$fontFamily}; }
             p { margin: 8px 0; }
             ol, ul { padding-left: 20px; } li { margin: 4px 0; }
         </style></head><body><h1>{$safeTitle}</h1>{$content}</body></html>

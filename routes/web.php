@@ -29,6 +29,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/homework/{homework}/status',    [HomeworkController::class, 'status'])->name('homework.status');
     Route::post('/homework/{homework}/timeout',  [HomeworkController::class, 'timeout'])->name('homework.timeout');
     Route::get('/homework/{homework}/download/{format}', [HomeworkController::class, 'download'])->name('homework.download');
+    Route::post('/homework/{homework}/refine',   [HomeworkController::class, 'refine'])->name('homework.refine');
     Route::delete('/homework/{homework}',        [HomeworkController::class, 'destroy'])->name('homework.destroy');
 
     // Profile

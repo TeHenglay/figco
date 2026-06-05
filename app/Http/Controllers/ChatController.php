@@ -34,8 +34,9 @@ class ChatController extends Controller
         abort_if($conversation->user_id !== auth()->id(), 403);
 
         $validated = $request->validate([
-            'message' => 'nullable|string|max:5000',
-            'image'   => 'nullable|file|mimes:jpeg,jpg,png,gif,webp,bmp,pdf|max:10240',
+            'message'    => 'nullable|string|max:5000',
+            'image'      => 'nullable|file|mimes:jpeg,jpg,png,gif,webp,bmp,pdf|max:10240',
+            'sussy_mode' => 'nullable|boolean',
         ]);
 
         if (empty($validated['message']) && !$request->hasFile('image')) {
@@ -69,8 +70,10 @@ class ChatController extends Controller
             ->values()
             ->toArray();
 
+        $sussyMode = !empty($validated['sussy_mode']);
+
         try {
-            $reply = $n8n->callChatSync($conversation->id, auth()->id(), $messageText, $history, $imageBase64, $imageMimeType);
+            $reply = $n8n->callChatSync($conversation->id, auth()->id(), $messageText, $history, $imageBase64, $imageMimeType, $sussyMode);
         } catch (\Throwable $e) {
             \Log::error('Chat sendMessage error', ['error' => $e->getMessage()]);
             $reply = 'Sorry, I had trouble responding. Please try again.';
