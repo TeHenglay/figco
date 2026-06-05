@@ -59,7 +59,7 @@ class ChatController extends Controller
         }
 
         try {
-            $assistantMessage = $conversation->messages()->create(['role' => 'assistant', 'content' => $reply]);
+            $assistantMessage = $conversation->messages()->create(['role' => 'assistant', 'content' => $reply, 'created_at' => now()]);
             $conversation->touch();
         } catch (\Throwable $e) {
             \Log::error('Chat DB save error', ['error' => $e->getMessage()]);
@@ -76,7 +76,7 @@ class ChatController extends Controller
             'message' => [
                 'role'       => $assistantMessage->role,
                 'content'    => $assistantMessage->content,
-                'created_at' => $assistantMessage->created_at->toISOString(),
+                'created_at' => $assistantMessage->created_at?->toISOString() ?? now()->toISOString(),
             ],
         ]);
     }
