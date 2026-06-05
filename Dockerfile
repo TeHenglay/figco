@@ -20,4 +20,4 @@ RUN php artisan route:cache || true
 
 EXPOSE 8000
 
-CMD php artisan serve --host=0.0.0.0 --port=$((${PORT:-8000}))
+CMD php -S 0.0.0.0:${PORT:-8000} -t public
