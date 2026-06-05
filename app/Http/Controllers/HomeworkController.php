@@ -162,10 +162,10 @@ class HomeworkController extends Controller
         $html = <<<HTML
 <!DOCTYPE html><html><head><meta charset="utf-8">
 <style>
-    body { font-family: notokhmer; font-size: 12pt; color: #111; line-height: 2; }
-    h1 { font-size: 18pt; color: #1e293b; border-bottom: 2px solid #0058be; padding-bottom: 6px; margin-bottom: 14px; }
-    h2 { font-size: 14pt; color: #1e293b; margin-top: 16px; }
-    h3 { font-size: 12pt; color: #1e293b; }
+    body { font-family: notokhmer, dejavusans; font-size: 12pt; color: #111; line-height: 2; }
+    h1 { font-size: 18pt; color: #1e293b; border-bottom: 2px solid #0058be; padding-bottom: 6px; margin-bottom: 14px; font-family: notokhmer, dejavusans; }
+    h2 { font-size: 14pt; color: #1e293b; margin-top: 16px; font-family: notokhmer, dejavusans; }
+    h3 { font-size: 12pt; color: #1e293b; font-family: notokhmer, dejavusans; }
     p  { margin: 6px 0; }
     ol, ul { padding-left: 18px; }
     li { margin: 3px 0; }
