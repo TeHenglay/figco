@@ -19,6 +19,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/chat/{conversation}',           [ChatController::class, 'show'])->name('chat.show');
     Route::post('/chat/{conversation}/message',  [ChatController::class, 'sendMessage'])->name('chat.message');
     Route::delete('/chat/{conversation}',        [ChatController::class, 'destroy'])->name('chat.destroy');
+    Route::post('/chat/download',                [ChatController::class, 'downloadMessage'])->name('chat.download');
 
     // Homework
     Route::get('/homework',                      [HomeworkController::class, 'index'])->name('homework.index');

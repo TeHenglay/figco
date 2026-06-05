@@ -1,39 +1,130 @@
 <x-app-layout>
 
 <div class="flex flex-col h-[calc(100vh-64px)] md:h-screen -m-8"
-     x-data="chatApp({{ $conversation->id }}, '{{ csrf_token() }}')"
+     x-data="{ ...chatApp({{ $conversation->id }}, '{{ csrf_token() }}'), monikaModal: false }"
      x-init="scrollToBottom()">
 
+    <!-- Monika Profile Modal -->
+    <div x-show="monikaModal" x-cloak
+         class="fixed inset-0 z-50 flex items-center justify-center p-6"
+         @click.self="monikaModal = false">
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" @click="monikaModal = false"></div>
+        <div class="relative bg-white border-4 border-slate-900 shadow-[10px_10px_0px_0px_rgba(30,41,59,1)] w-full max-w-md overflow-hidden"
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0 scale-95"
+             x-transition:enter-end="opacity-100 scale-100"
+             x-transition:leave="transition ease-in duration-150"
+             x-transition:leave-start="opacity-100 scale-100"
+             x-transition:leave-end="opacity-0 scale-95">
+
+            <!-- Banner -->
+            <div class="relative h-28 bg-gradient-to-br from-blue-600 to-blue-800 border-b-4 border-slate-900">
+                <!-- pattern dots -->
+                <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle, white 1px, transparent 1px); background-size: 18px 18px;"></div>
+                <button @click="monikaModal = false"
+                        class="absolute top-3 right-3 w-8 h-8 border-2 border-white/80 text-white flex items-center justify-center hover:bg-white/20 transition-colors">
+                    <span class="material-symbols-outlined text-[18px]">close</span>
+                </button>
+            </div>
+
+            <!-- Avatar overlapping banner -->
+            <div class="flex justify-center -mt-12 mb-3 relative z-10">
+                <div class="relative">
+                    <img src="/images/monika.jpg" alt="Monika"
+                         class="w-24 h-24 border-4 border-slate-900 object-cover shadow-[5px_5px_0px_0px_rgba(30,41,59,1)]"
+                         style="border-radius:50%">
+                    <span class="absolute bottom-1 right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full shadow"></span>
+                </div>
+            </div>
+
+            <!-- Name & title -->
+            <div class="text-center px-6 mb-5">
+                <h3 class="text-2xl font-black text-slate-900 tracking-tight">Monika</h3>
+                <p class="text-sm text-blue-600 font-semibold mt-0.5">AI Teaching Assistant</p>
+                <p class="text-xs text-slate-400 mt-1 italic">"Here to make teaching a little easier, one lesson at a time."</p>
+            </div>
+
+            <!-- Stats row -->
+            <div class="grid grid-cols-3 border-t-2 border-b-2 border-slate-900 divide-x-2 divide-slate-900 mb-5">
+                <div class="py-3 text-center">
+                    <p class="text-xl font-black text-slate-900">24/7</p>
+                    <p class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Available</p>
+                </div>
+                <div class="py-3 text-center">
+                    <p class="text-xl font-black text-blue-600">AI</p>
+                    <p class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Powered</p>
+                </div>
+                <div class="py-3 text-center">
+                    <p class="text-xl font-black text-slate-900">∞</p>
+                    <p class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Patience</p>
+                </div>
+            </div>
+
+            <!-- Capabilities -->
+            <div class="px-6 pb-6 space-y-3">
+                <div class="flex items-center gap-3 p-3 border-2 border-slate-900 bg-slate-50 shadow-[3px_3px_0px_0px_rgba(30,41,59,1)]">
+                    <div class="w-9 h-9 bg-blue-600 border-2 border-slate-900 flex items-center justify-center flex-shrink-0">
+                        <span class="material-symbols-outlined text-white text-[18px]">school</span>
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold text-slate-900">Lesson Planning & Quizzes</p>
+                        <p class="text-xs text-slate-500">Any grade level, any subject</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 p-3 border-2 border-slate-900 bg-slate-50 shadow-[3px_3px_0px_0px_rgba(30,41,59,1)]">
+                    <div class="w-9 h-9 bg-blue-600 border-2 border-slate-900 flex items-center justify-center flex-shrink-0">
+                        <span class="material-symbols-outlined text-white text-[18px]">image</span>
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold text-slate-900">Image & PDF Analysis</p>
+                        <p class="text-xs text-slate-500">Attach files directly to your message</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 p-3 border-2 border-slate-900 bg-slate-50 shadow-[3px_3px_0px_0px_rgba(30,41,59,1)]">
+                    <div class="w-9 h-9 bg-blue-600 border-2 border-slate-900 flex items-center justify-center flex-shrink-0">
+                        <span class="material-symbols-outlined text-white text-[18px]">download</span>
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold text-slate-900">Export Responses</p>
+                        <p class="text-xs text-slate-500">Download as PDF or DOCX anytime</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Chat Header -->
-    <div class="flex items-center gap-4 px-6 py-4 bg-white border-b-4 border-slate-900 flex-shrink-0">
-        <a href="{{ route('chat.index') }}" class="w-9 h-9 border-2 border-slate-900 flex items-center justify-center hover:bg-surface-container transition-colors">
+    <div class="flex items-center gap-4 px-4 py-3 bg-white border-b-4 border-slate-900 flex-shrink-0">
+        <a href="{{ route('chat.index') }}" class="w-9 h-9 border-2 border-slate-900 flex items-center justify-center hover:bg-surface-container transition-colors flex-shrink-0">
             <span class="material-symbols-outlined text-[20px]">arrow_back</span>
         </a>
-        <div class="w-10 h-10 border-2 border-slate-900 bg-blue-600 flex items-center justify-center flex-shrink-0">
-            <span class="material-symbols-outlined text-white text-[20px]" style="font-variation-settings: 'FILL' 1;">school</span>
+        <!-- Avatar with online ring -->
+        <div class="relative flex-shrink-0 cursor-pointer group" @click="monikaModal = true">
+            <img src="/images/monika.jpg" alt="Monika"
+                 class="w-14 h-14 border-[3px] border-slate-900 object-cover shadow-[3px_3px_0px_0px_rgba(30,41,59,1)] group-hover:opacity-85 transition-opacity"
+                 style="border-radius:50%">
+            <span class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full"></span>
         </div>
         <div class="flex-1 min-w-0">
-            <h2 class="font-technical-sm text-technical-sm text-slate-900 font-bold truncate">{{ $conversation->title }}</h2>
-            <p class="font-technical-xs text-technical-xs text-slate-400">Nova · AI Teaching Assistant</p>
+            <h2 class="text-lg font-bold text-slate-900 leading-tight truncate">Monika</h2>
+            <p class="font-technical-xs text-technical-xs text-slate-400 truncate">{{ $conversation->title }}</p>
         </div>
         <div class="flex items-center gap-2 px-3 py-1.5 border-2 border-slate-900 bg-green-50 font-technical-xs text-technical-xs text-green-700">
             <span class="w-2 h-2 bg-green-500 border border-slate-900 block rounded-full animate-pulse"></span>
-            Nova Online
+            Monika Online
         </div>
     </div>
 
     <!-- Messages Area -->
     <div class="flex-1 overflow-y-auto px-4 md:px-8 py-6 space-y-6 bg-surface-container-low" id="messages-container">
 
-        <!-- Nova intro if no messages -->
+        <!-- Monika intro if no messages -->
         @if($messages->count() === 0)
         <div class="flex justify-start gap-3">
-            <div class="w-10 h-10 border-2 border-slate-900 bg-blue-600 flex items-center justify-center flex-shrink-0 self-end">
-                <span class="material-symbols-outlined text-white text-[18px]" style="font-variation-settings: 'FILL' 1;">school</span>
-            </div>
+            <img src="/images/monika.jpg" alt="Monika" class="w-10 h-10 border-2 border-slate-900 object-cover flex-shrink-0 self-end" style="border-radius:50%">
             <div class="max-w-[75%] bg-white border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] px-4 py-3">
-                <p class="font-technical-xs text-technical-xs text-blue-600 font-bold mb-1">Nova</p>
-                <p class="font-body-md text-body-md text-sm">Hey there! 👋 I'm Nova, your AI teaching assistant. I'm here to help you with lesson planning, explaining concepts, writing activities, quiz questions, and anything else you need. What are we working on today?</p>
+                <p class="font-technical-xs text-technical-xs text-blue-600 font-bold mb-1">Monika</p>
+                <p class="font-body-md text-body-md text-sm">Hey! I'm Monika, your AI teaching assistant. What can I help you with today?</p>
             </div>
         </div>
         @endif
@@ -42,15 +133,13 @@
         @foreach($messages as $msg)
             <div class="flex {{ $msg->role === 'user' ? 'justify-end' : 'justify-start' }} gap-3">
                 @if($msg->role === 'assistant')
-                    <div class="w-10 h-10 border-2 border-slate-900 bg-blue-600 flex items-center justify-center flex-shrink-0 self-end">
-                        <span class="material-symbols-outlined text-white text-[18px]" style="font-variation-settings: 'FILL' 1;">school</span>
-                    </div>
+                    <img src="/images/monika.jpg" alt="Monika" class="w-10 h-10 border-2 border-slate-900 object-cover flex-shrink-0 self-end" style="border-radius:50%">
                 @endif
                 <div class="max-w-[75%] {{ $msg->role === 'user'
                     ? 'bg-blue-600 text-white border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(30,41,59,1)]'
                     : 'bg-white border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(30,41,59,1)]' }} px-4 py-3">
                     @if($msg->role === 'assistant')
-                        <p class="font-technical-xs text-technical-xs text-blue-600 font-bold mb-1">Nova</p>
+                        <p class="font-technical-xs text-technical-xs text-blue-600 font-bold mb-1">Monika</p>
                     @endif
                     @if($msg->role === 'assistant')
                         <div class="nova-markdown" data-md="{{ e($msg->content) }}"></div>
@@ -71,21 +160,32 @@
         <template x-for="msg in dynamicMessages" :key="msg.id">
             <div :class="msg.role === 'user' ? 'flex justify-end gap-3' : 'flex justify-start gap-3'">
                 <template x-if="msg.role === 'assistant'">
-                    <div class="w-10 h-10 border-2 border-slate-900 bg-blue-600 flex items-center justify-center flex-shrink-0 self-end">
-                        <span class="material-symbols-outlined text-white text-[18px]" style="font-variation-settings: 'FILL' 1;">school</span>
-                    </div>
+                    <img src="/images/monika.jpg" alt="Monika" class="w-10 h-10 border-2 border-slate-900 object-cover flex-shrink-0 self-end" style="border-radius:50%">
                 </template>
                 <div :class="msg.role === 'user'
                     ? 'max-w-[75%] bg-blue-600 text-white border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] px-4 py-3'
                     : 'max-w-[75%] bg-white border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] px-4 py-3'">
                     <template x-if="msg.role === 'assistant'">
-                        <p class="font-technical-xs text-technical-xs text-blue-600 font-bold mb-1">Nova</p>
+                        <p class="font-technical-xs text-technical-xs text-blue-600 font-bold mb-1">Monika</p>
                     </template>
                     <template x-if="msg.role === 'assistant'">
                         <div class="nova-markdown" x-html="renderMarkdown(msg.content)"></div>
                     </template>
                     <template x-if="msg.role === 'user'">
-                        <p class="font-body-md text-body-md text-sm whitespace-pre-wrap" x-text="msg.content"></p>
+                        <div>
+                            <!-- Image attachment preview -->
+                            <template x-if="msg.imagePreview">
+                                <img :src="msg.imagePreview" class="max-w-full max-h-48 mb-2 border border-blue-400 block">
+                            </template>
+                            <!-- PDF attachment indicator -->
+                            <template x-if="msg.fileType === 'pdf' && !msg.imagePreview">
+                                <div class="flex items-center gap-2 mb-2 px-2 py-1.5 bg-white bg-opacity-20 border border-blue-300">
+                                    <span class="material-symbols-outlined text-[18px]">picture_as_pdf</span>
+                                    <span class="font-technical-xs text-technical-xs text-white text-[11px] truncate" x-text="msg.fileName ?? 'document.pdf'"></span>
+                                </div>
+                            </template>
+                            <p x-show="msg.content && msg.content !== '📎 [Image]'" class="font-body-md text-body-md text-sm whitespace-pre-wrap" x-text="msg.content"></p>
+                        </div>
                     </template>
                 </div>
                 <template x-if="msg.role === 'user'">
@@ -98,11 +198,9 @@
 
         <!-- Typing indicator -->
         <div x-show="loading" x-cloak class="flex justify-start gap-3">
-            <div class="w-10 h-10 border-2 border-slate-900 bg-blue-600 flex items-center justify-center flex-shrink-0">
-                <span class="material-symbols-outlined text-white text-[18px]" style="font-variation-settings: 'FILL' 1;">school</span>
-            </div>
+            <img src="/images/monika.jpg" alt="Monika" class="w-10 h-10 border-2 border-slate-900 object-cover flex-shrink-0" style="border-radius:50%">
             <div class="bg-white border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] px-4 py-3 flex flex-col gap-1">
-                <p class="font-technical-xs text-technical-xs text-blue-600 font-bold">Nova</p>
+                <p class="font-technical-xs text-technical-xs text-blue-600 font-bold">Monika</p>
                 <div class="flex items-center gap-1">
                     <span class="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay:0ms"></span>
                     <span class="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay:150ms"></span>
@@ -132,6 +230,24 @@
 
     <!-- Input Bar -->
     <div class="px-4 md:px-8 py-4 bg-white border-t-4 border-slate-900 flex-shrink-0">
+        <!-- File preview strip -->
+        <div x-show="imageFile" x-cloak class="mb-3 flex items-center gap-3 px-3 py-2 border-2 border-blue-600 bg-blue-50">
+            <!-- Image preview -->
+            <template x-if="fileType === 'image' && imagePreview">
+                <img :src="imagePreview" class="h-14 w-14 object-cover border border-blue-300 flex-shrink-0">
+            </template>
+            <!-- PDF icon -->
+            <template x-if="fileType === 'pdf'">
+                <div class="h-14 w-14 flex-shrink-0 border border-blue-300 bg-white flex flex-col items-center justify-center gap-1">
+                    <span class="material-symbols-outlined text-red-500 text-[28px]">picture_as_pdf</span>
+                    <span class="text-[9px] text-slate-400 font-bold uppercase">PDF</span>
+                </div>
+            </template>
+            <span class="flex-1 font-technical-xs text-technical-xs text-slate-600 truncate" x-text="imageFile ? imageFile.name : ''"></span>
+            <button type="button" @click="clearImage()" class="text-slate-400 hover:text-red-500 transition-colors flex-shrink-0">
+                <span class="material-symbols-outlined text-[20px]">close</span>
+            </button>
+        </div>
         <form @submit.prevent="sendMessage()" class="flex gap-3">
             <div class="flex-1 relative">
                 <textarea
@@ -139,20 +255,28 @@
                     x-model="input"
                     @keydown.enter.prevent="if (!$event.shiftKey) sendMessage()"
                     rows="1"
-                    placeholder="Ask Nova anything about your lesson..."
+                    placeholder="Ask Monika anything about your lesson..."
                     class="w-full px-4 py-3 bg-surface-container-low border-2 border-slate-900 font-body-md text-body-md text-sm focus:outline-none focus:border-blue-600 focus:shadow-[4px_4px_0px_0px_#005ac2] transition-shadow resize-none placeholder-slate-400"
                     style="min-height: 48px; max-height: 200px; overflow-y: auto;"
                     @input="$el.style.height = 'auto'; $el.style.height = $el.scrollHeight + 'px'"
                 ></textarea>
             </div>
+            <!-- Image attach button -->
+            <button type="button" @click="$refs.imgInput.click()"
+                :class="imageFile ? 'border-blue-600 bg-blue-50 text-blue-600' : 'border-slate-900 bg-surface-container-low text-slate-500 hover:bg-slate-100'"
+                class="px-3 border-2 transition-colors self-end flex items-center justify-center"
+                style="min-height: 48px;" title="Attach image or PDF">
+                <span class="material-symbols-outlined text-[20px]">attach_file</span>
+            </button>
+            <input type="file" x-ref="imgInput" accept="image/*,application/pdf,.pdf" class="hidden" @change="onImageSelect($event)">
             <button type="submit"
-                :disabled="loading || !input.trim()"
+                :disabled="loading || (!input.trim() && !imageFile)"
                 class="px-5 py-3 bg-blue-600 text-white border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all font-technical-xs text-technical-xs disabled:opacity-40 disabled:cursor-not-allowed disabled:translate-x-0 disabled:translate-y-0 disabled:shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] flex items-center gap-2 self-end">
                 <span class="material-symbols-outlined text-[20px]" x-text="loading ? 'hourglass_top' : 'send'">send</span>
                 <span x-text="loading ? 'Thinking...' : 'Send'">Send</span>
             </button>
         </form>
-        <p class="font-technical-xs text-technical-xs text-slate-400 mt-2">Shift+Enter for new line · Nova remembers your past conversations</p>
+        <p class="font-technical-xs text-technical-xs text-slate-400 mt-2">Shift+Enter for new line · Attach images or PDFs for Monika to analyze</p>
     </div>
 
 </div>
@@ -194,6 +318,63 @@ function chatApp(conversationId, csrfToken) {
         loading: false,
         dynamicMessages: [],
         msgCount: 0,
+        imageFile: null,
+        imagePreview: null,
+        fileType: null,
+
+        onImageSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const isPdf = file.type === 'application/pdf';
+            const maxSize = isPdf ? 10 * 1024 * 1024 : 5 * 1024 * 1024;
+            if (file.size > maxSize) {
+                alert(isPdf ? 'PDF must be under 10MB.' : 'Image must be under 5MB.');
+                event.target.value = '';
+                return;
+            }
+            this.imageFile = file;
+            this.fileType = isPdf ? 'pdf' : 'image';
+            if (isPdf) {
+                this.imagePreview = null;
+            } else {
+                const reader = new FileReader();
+                reader.onload = (e) => { this.imagePreview = e.target.result; };
+                reader.readAsDataURL(file);
+            }
+        },
+
+        clearImage() {
+            this.imageFile = null;
+            this.imagePreview = null;
+            this.fileType = null;
+            if (this.$refs.imgInput) this.$refs.imgInput.value = '';
+        },
+
+        downloadMessage(content, format) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/chat/download';
+            form.target = '_blank';
+
+            const fields = {
+                _token: '{{ csrf_token() }}',
+                content: content,
+                format: format,
+                title: 'Monika - Response',
+            };
+
+            Object.entries(fields).forEach(([key, val]) => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = val;
+                form.appendChild(input);
+            });
+
+            document.body.appendChild(form);
+            form.submit();
+            document.body.removeChild(form);
+        },
 
         scrollToBottom() {
             this.$nextTick(() => {
@@ -204,25 +385,42 @@ function chatApp(conversationId, csrfToken) {
 
         async sendMessage() {
             const text = this.input.trim();
-            if (!text || this.loading) return;
+            if ((!text && !this.imageFile) || this.loading) return;
+
+            const capturedPreview = this.imagePreview;
+            const capturedFile = this.imageFile;
+            const capturedFileType = this.fileType;
+            const capturedFileName = this.imageFile?.name ?? null;
 
             this.input = '';
+            this.clearImage();
             this.loading = true;
-            this.dynamicMessages.push({ id: ++this.msgCount, role: 'user', content: text });
+
+            this.dynamicMessages.push({
+                id: ++this.msgCount,
+                role: 'user',
+                content: text,
+                imagePreview: capturedPreview,
+                fileType: capturedFileType,
+                fileName: capturedFileName,
+            });
             this.scrollToBottom();
 
             const ta = this.$refs.msgInput;
             if (ta) ta.style.height = 'auto';
 
             try {
+                const formData = new FormData();
+                formData.append('message', text);
+                if (capturedFile) formData.append('image', capturedFile);
+
                 const res = await fetch(`/chat/${conversationId}/message`, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': csrfToken,
                         'Accept': 'application/json',
                     },
-                    body: JSON.stringify({ message: text }),
+                    body: formData,
                 });
 
                 const data = await res.json();

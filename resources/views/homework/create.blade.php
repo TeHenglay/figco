@@ -49,6 +49,36 @@
                 </div>
             </div>
 
+            <!-- Language -->
+            <div class="bg-white border-2 border-slate-900 pixel-shadow">
+                <div class="h-1.5 bg-green-400 border-b-2 border-slate-900"></div>
+                <div class="p-6">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 border-2 border-slate-900 bg-green-100 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-green-700">translate</span>
+                        </div>
+                        <div>
+                            <h3 class="font-headline-md text-headline-md text-slate-900" style="font-family: Epilogue, sans-serif; font-size: 18px;">Output Language</h3>
+                            <p class="font-technical-xs text-technical-xs text-slate-500">Choose the language for the generated homework</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-3">
+                        <label class="flex-1 cursor-pointer">
+                            <input type="radio" name="language" value="English" class="sr-only peer" checked>
+                            <div class="flex items-center justify-center gap-2 py-3 border-2 border-slate-900 bg-surface-container-low peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 peer-checked:shadow-[3px_3px_0px_0px_rgba(30,41,59,1)] font-technical-sm text-technical-sm font-bold transition-all">
+                                🇬🇧 English
+                            </div>
+                        </label>
+                        <label class="flex-1 cursor-pointer">
+                            <input type="radio" name="language" value="Khmer" class="sr-only peer">
+                            <div class="flex items-center justify-center gap-2 py-3 border-2 border-slate-900 bg-surface-container-low peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 peer-checked:shadow-[3px_3px_0px_0px_rgba(30,41,59,1)] font-technical-sm text-technical-sm font-bold transition-all">
+                                🇰🇭 ភាសាខ្មែរ
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
             <!-- Instructions -->
             <div class="bg-white border-2 border-slate-900 pixel-shadow">
                 <div class="h-1.5 bg-blue-500 border-b-2 border-slate-900"></div>

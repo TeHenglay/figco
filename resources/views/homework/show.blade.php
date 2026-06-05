@@ -153,7 +153,8 @@
                             Homework Preview
                         </h3>
                     </div>
-                    <div class="p-6 prose prose-sm max-w-none font-body-md text-body-md text-sm leading-relaxed overflow-auto max-h-[70vh]">
+                    <div class="p-6 prose prose-sm max-w-none font-body-md text-body-md text-sm leading-relaxed overflow-auto max-h-[70vh]"
+                         style="font-family: 'Inter', 'Kantumruy Pro', sans-serif;">
                         {!! $homework->homework_content !!}
                     </div>
                 </div>

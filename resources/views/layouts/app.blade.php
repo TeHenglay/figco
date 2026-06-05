@@ -8,7 +8,7 @@
     <title>{{ config('app.name', 'FigCo') }}</title>
 
     <!-- FigCo Design System Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,100..900;1,100..900&family=Inter:opsz,wght@14..32,100..900&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,100..900;1,100..900&family=Inter:opsz,wght@14..32,100..900&family=Space+Grotesk:wght@300..700&family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 
     <!-- Tailwind CDN with FigCo Config -->
@@ -82,14 +82,14 @@
                         "stack-lg": "32px"
                     },
                     fontFamily: {
-                        "headline-xl": ["Epilogue"],
-                        "headline-lg": ["Epilogue"],
-                        "headline-md": ["Epilogue"],
-                        "body-lg": ["Inter"],
-                        "body-md": ["Inter"],
-                        "technical-sm": ["Space Grotesk"],
-                        "technical-xs": ["Space Grotesk"],
-                        "sans": ["Inter"]
+                        "headline-xl": ["Epilogue", "Kantumruy Pro", "sans-serif"],
+                        "headline-lg": ["Epilogue", "Kantumruy Pro", "sans-serif"],
+                        "headline-md": ["Epilogue", "Kantumruy Pro", "sans-serif"],
+                        "body-lg": ["Inter", "Kantumruy Pro", "sans-serif"],
+                        "body-md": ["Inter", "Kantumruy Pro", "sans-serif"],
+                        "technical-sm": ["Space Grotesk", "Kantumruy Pro", "sans-serif"],
+                        "technical-xs": ["Space Grotesk", "Kantumruy Pro", "sans-serif"],
+                        "sans": ["Inter", "Kantumruy Pro", "sans-serif"]
                     },
                     fontSize: {
                         "headline-xl": ["48px", { lineHeight: "1.1", letterSpacing: "-0.02em", fontWeight: "800" }],
@@ -139,6 +139,8 @@
         .pixel-shadow-lg  { box-shadow: 8px 8px 0px 0px #1E293B; }
         .btn-hover:hover  { transform: translate(4px, 4px); box-shadow: none; }
 
+        /* Kantumruy Pro — auto-fallback for any Khmer Unicode characters */
+
         /* Alpine.js cloak */
         [x-cloak] { display: none !important; }
     </style>
@@ -148,6 +150,24 @@
 <body class="bg-background text-on-background font-body-md antialiased min-h-screen flex">
 
     @include('layouts.navigation')
+
+    <!-- Floating Monika Chat Button -->
+    @auth
+    @unless(request()->routeIs('chat.*'))
+    <a href="{{ route('chat.index') }}"
+       class="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 bg-blue-600 text-white border-2 border-slate-900 shadow-[6px_6px_0px_0px_rgba(30,41,59,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] transition-all group">
+        <div class="relative flex-shrink-0">
+            <img src="/images/monika.jpg" alt="Monika" class="w-9 h-9 object-cover rounded-full border-2 border-white">
+            <span class="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-slate-900 animate-pulse"></span>
+        </div>
+        <div class="flex flex-col leading-tight">
+            <span class="font-technical-xs text-[9px] text-blue-200 uppercase tracking-widest">Chat with</span>
+            <span class="font-technical-sm text-[13px] font-bold">Monika</span>
+        </div>
+        <span class="material-symbols-outlined text-[18px] text-blue-200 group-hover:text-white transition-colors">arrow_forward</span>
+    </a>
+    @endunless
+    @endauth
 
     <!-- Main Content Area -->
     <div class="flex-grow md:ml-64 flex flex-col min-h-screen">
@@ -164,5 +184,29 @@
         </main>
     </div>
 
+    <!-- Loading Overlay (logout) -->
+    <div id="figco-loading" class="hidden fixed inset-0 z-[9999] flex items-center justify-center" style="background:rgba(15,23,42,0.88);">
+        <div class="bg-white border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(30,41,59,1)] px-10 py-8 flex flex-col items-center gap-5 sketch-border">
+            <div class="relative">
+                <img src="/images/monika.jpg" alt="Monika" class="w-16 h-16 object-cover rounded-full border-2 border-slate-900">
+                <span class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 border-2 border-slate-900 rounded-full animate-pulse"></span>
+            </div>
+            <div class="flex gap-2">
+                <span class="w-3 h-3 bg-blue-600 border border-slate-900 rounded-full animate-bounce" style="animation-delay:0ms"></span>
+                <span class="w-3 h-3 bg-blue-600 border border-slate-900 rounded-full animate-bounce" style="animation-delay:150ms"></span>
+                <span class="w-3 h-3 bg-blue-600 border border-slate-900 rounded-full animate-bounce" style="animation-delay:300ms"></span>
+            </div>
+            <p class="font-technical-sm text-slate-900 uppercase tracking-widest" style="font-family:'Space Grotesk',sans-serif; font-size:12px;">Signing out...</p>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('form[action*="logout"]').forEach(function(f) {
+                f.addEventListener('submit', function() {
+                    document.getElementById('figco-loading').classList.remove('hidden');
+                });
+            });
+        });
+    </script>
 </body>
 </html>

@@ -7,15 +7,25 @@ use Illuminate\Support\Facades\Log;
 
 class N8nService
 {
-    public function callChatSync(int $conversationId, int $userId, string $message, array $history): string
+    public function callChatSync(int $conversationId, int $userId, string $message, array $history, ?string $imageBase64 = null, ?string $imageMimeType = null): string
     {
+        $systemInstruction = 'You are Monika, a friendly AI teaching assistant. Keep your replies concise and to the point — avoid long paragraphs. Use short sentences. Only give detailed or structured output (like lesson plans or quizzes) when the user explicitly asks for a document or full plan.';
+
+        $payload = [
+            'conversation_id'    => $conversationId,
+            'user_id'            => $userId,
+            'message'            => $message,
+            'history'            => $history,
+            'system_instruction' => $systemInstruction,
+        ];
+
+        if ($imageBase64 !== null) {
+            $payload['image_base64']   = $imageBase64;
+            $payload['image_mime_type'] = $imageMimeType ?? 'image/jpeg';
+        }
+
         try {
-            $response = Http::timeout(60)->post(config('services.n8n.chat_webhook_url'), [
-                'conversation_id' => $conversationId,
-                'user_id'         => $userId,
-                'message'         => $message,
-                'history'         => $history,
-            ]);
+            $response = Http::timeout(90)->withoutVerifying()->post(config('services.n8n.chat_webhook_url'), $payload);
         } catch (\Throwable $e) {
             Log::error('n8n chat connection error', ['error' => $e->getMessage()]);
             return 'Sorry, I had trouble responding. Please try again.';
@@ -75,13 +85,14 @@ class N8nService
         return null;
     }
 
-    public function triggerHomework(int $homeworkId, string $pdfBase64, string $filename, string $instructions, string $callbackUrl): void
+    public function triggerHomework(int $homeworkId, string $pdfBase64, string $filename, string $instructions, string $callbackUrl, string $language = 'English'): void
     {
-        Http::timeout(15)->post(config('services.n8n.homework_webhook_url'), [
+        Http::timeout(15)->withoutVerifying()->post(config('services.n8n.homework_webhook_url'), [
             'homework_id'     => $homeworkId,
             'pdf_base64'      => $pdfBase64,
             'filename'        => $filename,
             'instructions'    => $instructions,
+            'language'        => $language,
             'callback_url'    => $callbackUrl,
             'callback_secret' => config('services.n8n.callback_secret'),
         ]);

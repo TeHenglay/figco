@@ -8,7 +8,7 @@
     <title>{{ config('app.name', 'FigCo') }}</title>
 
     <!-- FigCo Design System Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,100..900;1,100..900&family=Inter:opsz,wght@14..32,100..900&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,100..900;1,100..900&family=Inter:opsz,wght@14..32,100..900&family=Space+Grotesk:wght@300..700&family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -41,14 +41,14 @@
                         "surface-variant": "#d8e3fb",
                     },
                     fontFamily: {
-                        "headline-xl": ["Epilogue"],
-                        "headline-lg": ["Epilogue"],
-                        "headline-md": ["Epilogue"],
-                        "body-lg": ["Inter"],
-                        "body-md": ["Inter"],
-                        "technical-sm": ["Space Grotesk"],
-                        "technical-xs": ["Space Grotesk"],
-                        "sans": ["Inter"]
+                        "headline-xl": ["Epilogue", "Kantumruy Pro", "sans-serif"],
+                        "headline-lg": ["Epilogue", "Kantumruy Pro", "sans-serif"],
+                        "headline-md": ["Epilogue", "Kantumruy Pro", "sans-serif"],
+                        "body-lg": ["Inter", "Kantumruy Pro", "sans-serif"],
+                        "body-md": ["Inter", "Kantumruy Pro", "sans-serif"],
+                        "technical-sm": ["Space Grotesk", "Kantumruy Pro", "sans-serif"],
+                        "technical-xs": ["Space Grotesk", "Kantumruy Pro", "sans-serif"],
+                        "sans": ["Inter", "Kantumruy Pro", "sans-serif"]
                     },
                     fontSize: {
                         "headline-xl": ["48px", { lineHeight: "1.1", letterSpacing: "-0.02em", fontWeight: "800" }],
@@ -109,6 +109,31 @@
     <div class="fixed bottom-6 right-6 opacity-20 pointer-events-none hidden lg:block z-0">
         <div class="w-24 h-24 border-4 border-surface-tint sketch-border"></div>
     </div>
+
+    <!-- Loading Overlay (login) -->
+    <div id="figco-loading" class="hidden fixed inset-0 z-[9999] flex items-center justify-center" style="background:rgba(15,23,42,0.88);">
+        <div class="bg-white border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(30,41,59,1)] px-10 py-8 flex flex-col items-center gap-5 sketch-border">
+            <div class="flex items-center gap-1">
+                <img src="/logo/logo-figco.png" alt="" class="h-10 w-auto object-contain">
+                <img src="/logo/FIGCO.png" alt="FigCo" class="h-10 w-auto object-contain">
+            </div>
+            <div class="flex gap-2 mt-1">
+                <span class="w-3 h-3 bg-blue-600 border border-slate-900 rounded-full animate-bounce" style="animation-delay:0ms"></span>
+                <span class="w-3 h-3 bg-blue-600 border border-slate-900 rounded-full animate-bounce" style="animation-delay:150ms"></span>
+                <span class="w-3 h-3 bg-blue-600 border border-slate-900 rounded-full animate-bounce" style="animation-delay:300ms"></span>
+            </div>
+            <p class="font-technical-sm text-slate-900 uppercase tracking-widest" style="font-family:'Space Grotesk',sans-serif; font-size:12px;">Signing in...</p>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('form:not(#send-verification)').forEach(function(f) {
+                f.addEventListener('submit', function() {
+                    document.getElementById('figco-loading').classList.remove('hidden');
+                });
+            });
+        });
+    </script>
 
     <div class="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-12">
 

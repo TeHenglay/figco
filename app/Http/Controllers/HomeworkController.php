@@ -25,10 +25,13 @@ class HomeworkController extends Controller
         $validated = $request->validate([
             'pdf'          => 'required|file|mimes:pdf|max:20480',
             'instructions' => 'required|string|max:3000',
+            'language'     => 'nullable|in:English,Khmer',
         ]);
 
         $file = $request->file('pdf');
         $path = $file->store('homework-uploads', 'local');
+
+        $language = $validated['language'] ?? 'English';
 
         $hw = auth()->user()->homeworkRequests()->create([
             'original_filename' => $file->getClientOriginalName(),
@@ -44,7 +47,8 @@ class HomeworkController extends Controller
             $pdfBase64,
             $file->getClientOriginalName(),
             $validated['instructions'],
-            route('webhook.n8n.homework')
+            route('webhook.n8n.homework'),
+            $language
         );
 
         return redirect()->route('homework.show', $hw)->with('info', 'Your homework is being generated...');
@@ -96,7 +100,8 @@ class HomeworkController extends Controller
         $html = <<<HTML
         <!DOCTYPE html><html><head><meta charset="utf-8">
         <style>
-            body { font-family: DejaVu Sans, sans-serif; font-size: 12px; color: #111; line-height: 1.6; margin: 40px; }
+            @font-face { font-family: 'KhmerOS'; src: url('https://fonts.gstatic.com/ea/khmerossystem/v4/KhmerOS.ttf') format('truetype'); }
+            body { font-family: 'DejaVu Sans', 'KhmerOS', sans-serif; font-size: 12px; color: #111; line-height: 1.8; margin: 40px; }
             h1,h2,h3 { color: #1e293b; } h1 { font-size: 20px; border-bottom: 2px solid #0058be; padding-bottom: 8px; }
             p { margin: 8px 0; }
         </style></head><body><h1>{$safeTitle}</h1>{$content}</body></html>
