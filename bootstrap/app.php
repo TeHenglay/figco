@@ -13,7 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->trustProxies(at: '*');
         $middleware->validateCsrfTokens(except: [
-            'webhook/n8n',
+            'webhook/n8n/*',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

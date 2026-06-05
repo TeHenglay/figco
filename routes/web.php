@@ -26,6 +26,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/homework',                     [HomeworkController::class, 'store'])->name('homework.store');
     Route::get('/homework/{homework}',           [HomeworkController::class, 'show'])->name('homework.show');
     Route::get('/homework/{homework}/status',    [HomeworkController::class, 'status'])->name('homework.status');
+    Route::post('/homework/{homework}/timeout',  [HomeworkController::class, 'timeout'])->name('homework.timeout');
     Route::get('/homework/{homework}/download/{format}', [HomeworkController::class, 'download'])->name('homework.download');
     Route::delete('/homework/{homework}',        [HomeworkController::class, 'destroy'])->name('homework.destroy');
 

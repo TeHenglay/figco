@@ -62,6 +62,18 @@ class HomeworkController extends Controller
         return response()->json(['status' => $homework->status]);
     }
 
+    public function timeout(HomeworkRequest $homework)
+    {
+        abort_if($homework->user_id !== auth()->id(), 403);
+        if (in_array($homework->status, ['processing', 'pending'])) {
+            $homework->update([
+                'status'        => 'failed',
+                'error_message' => 'Generation timed out after 3 minutes. The AI took too long to respond. Please try again.',
+            ]);
+        }
+        return response()->json(['ok' => true]);
+    }
+
     public function download(HomeworkRequest $homework, string $format)
     {
         abort_if($homework->user_id !== auth()->id(), 403);

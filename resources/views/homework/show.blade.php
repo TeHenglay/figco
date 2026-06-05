@@ -16,7 +16,7 @@
 
     @if($homework->status === 'processing' || $homework->status === 'pending')
         <!-- Processing State -->
-        <div class="max-w-xl" x-data="pollStatus({{ $homework->id }}, '{{ route('homework.status', $homework) }}')" x-init="startPolling()">
+        <div class="max-w-xl" x-data="pollStatus('{{ route('homework.status', $homework) }}', '{{ route('homework.timeout', $homework) }}', '{{ csrf_token() }}')" x-init="startPolling()">
             <div class="bg-white border-2 border-slate-900 pixel-shadow-lg">
                 <div class="h-1.5 bg-yellow-400 border-b-2 border-slate-900 animate-pulse"></div>
                 <div class="p-10 flex flex-col items-center text-center">
@@ -26,18 +26,37 @@
                     <h3 class="font-headline-md text-headline-md text-slate-900 mb-2" style="font-family: Epilogue, sans-serif;">AI is generating your homework</h3>
                     <p class="font-body-md text-body-md text-slate-500 text-sm mb-6">Gemini is reading your lesson PDF and crafting the perfect assignment. This usually takes 30–60 seconds.</p>
                     <div class="w-full bg-slate-200 border-2 border-slate-900 h-3 mb-2">
-                        <div class="bg-blue-500 h-full border-r-2 border-slate-900 animate-pulse" style="width: 65%"></div>
+                        <div class="bg-blue-500 h-full border-r-2 border-slate-900 transition-all duration-1000" :style="'width:' + progress + '%'"></div>
                     </div>
-                    <p class="font-technical-xs text-technical-xs text-slate-400">Auto-refreshing every 5 seconds...</p>
+                    <p class="font-technical-xs text-technical-xs text-slate-400" x-text="statusText"></p>
                 </div>
             </div>
         </div>
 
         <script>
-        function pollStatus(hwId, statusUrl) {
+        function pollStatus(statusUrl, timeoutUrl, csrfToken) {
+            const MAX_SECONDS = 180;
             return {
+                elapsed: 0,
+                progress: 5,
+                statusText: 'Auto-refreshing every 5 seconds...',
                 startPolling() {
                     const interval = setInterval(async () => {
+                        this.elapsed += 5;
+                        this.progress = Math.min(95, Math.round((this.elapsed / MAX_SECONDS) * 100));
+                        this.statusText = `${this.elapsed}s elapsed — auto-refreshing every 5 seconds...`;
+
+                        if (this.elapsed >= MAX_SECONDS) {
+                            clearInterval(interval);
+                            this.statusText = 'Timed out. Marking as failed...';
+                            await fetch(timeoutUrl, {
+                                method: 'POST',
+                                headers: { 'Accept': 'application/json', 'X-CSRF-TOKEN': csrfToken }
+                            }).catch(() => {});
+                            window.location.reload();
+                            return;
+                        }
+
                         try {
                             const res = await fetch(statusUrl, { headers: { 'Accept': 'application/json' } });
                             const data = await res.json();
