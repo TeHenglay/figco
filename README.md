@@ -1,58 +1,96 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="public/logo/logo-figco-tran.png" width="120" alt="FigCo logo">
 </p>
 
-## About Laravel
+<h1 align="center">FigCo Teacher Assistant</h1>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+<p align="center">
+  An AI teaching sidekick for Cambodian classrooms — chat with an AI assistant, generate homework from lesson PDFs,<br/>
+  and export polished worksheets in English or Khmer, all wrapped in a hand-sketched pixel-art UI.
+</p>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## What is this?
 
-## Learning Laravel
+FigCo Teacher Assistant is a Laravel app built for teachers who want an AI co-pilot without the AI-generated-slop aesthetic. It pairs a Laravel + Blade + Alpine.js frontend with [n8n](https://n8n.io) workflows running Google Gemini, so all the actual AI orchestration (prompting, image/video analysis, PDF parsing) lives in versioned, visually-editable n8n workflows rather than buried in application code.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Two core experiences:
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **Chat with Monika** — a warm, personality-driven AI teaching assistant (with an optional "Sussy Mode" for off-topic banter). Supports text, image analysis, and YouTube video summarization, and replies naturally in Khmer when a teacher writes in Khmer.
+- **Homework Generator** — upload a lesson PDF, describe what you need ("10 multiple-choice questions with answer key," "fill-in-the-blank worksheet," etc.), and get back a fully generated homework document you can refine conversationally and export as PDF or DOCX — with full Khmer script and font support.
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## Features
 
-## Agentic Development
+- 🗨️ **AI chat assistant** with conversation history, image understanding, and YouTube video summarization (Gemini's native video-URL input)
+- 📄 **PDF → Homework generation** via an async n8n workflow + Laravel webhook callback, with live status polling on the frontend
+- 🇰🇭 **First-class Khmer support** — UI locale switching, Khmer-aware AI prompting, and Khmer PDF export via mPDF with a bundled Noto Khmer font (with automatic fallback for unsupported glyph sets)
+- ✍️ **Conversational refinement** — ask the AI to tweak generated homework in place ("make question 3 harder," "add a rubric") without starting over
+- 📤 **Export to PDF or DOCX** (DomPDF for Latin scripts, mPDF for Khmer, PhpWord for Word docs)
+- 🎨 **Distinctive hand-sketched pixel-art design system** — thick borders, hard drop-shadows, and a warm off-white palette instead of generic AI-app gradients
+- 🔐 Per-user API key management, email verification, and standard Laravel auth (via Breeze)
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Tech Stack
 
-```bash
-composer require laravel/boost --dev
+| Layer | Choice |
+|---|---|
+| Backend | Laravel 13, PHP 8.4+ |
+| Frontend | Blade, Alpine.js, Tailwind CSS, Vite |
+| Database | PostgreSQL (hosted on Supabase) |
+| AI orchestration | [n8n](https://n8n.io) workflows (webhook-triggered) |
+| AI model | Google Gemini (chat, image analysis, video analysis) |
+| PDF export | DomPDF (Latin) / mPDF (Khmer) |
+| DOCX export | PhpOffice/PhpWord |
+| Deployment | Docker → Railway |
 
-php artisan boost:install
+## How it fits together
+
+```
+Browser ──▶ Laravel (Blade + Alpine) ──▶ n8n webhook ──▶ Gemini AI
+                     ▲                         │
+                     └────── callback ─────────┘
+                     (homework_id + generated HTML)
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Laravel never talks to Gemini directly — it hands off work to n8n via webhook and either waits synchronously (chat) or receives an async callback once the workflow finishes (homework generation, since PDF processing can take longer than a typical request timeout). All prompt engineering, model selection, and multi-step logic (e.g. "does this message contain an image or a YouTube link?") lives in the n8n workflows themselves, making them independently testable and editable without a deploy.
 
-## Contributing
+## Getting Started
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+composer install
+npm install
 
-## Code of Conduct
+cp .env.example .env
+php artisan key:generate
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# configure DB + n8n webhook URLs in .env, then:
+php artisan migrate
 
-## Security Vulnerabilities
+npm run dev        # in one terminal
+php artisan serve  # in another
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Required `.env` values beyond the Laravel defaults:
+
+```env
+DB_CONNECTION=pgsql
+DB_HOST=...
+DB_DATABASE=...
+DB_USERNAME=...
+DB_PASSWORD=...
+
+N8N_CHAT_WEBHOOK_URL=...
+N8N_SUSSY_WEBHOOK_URL=...
+N8N_HOMEWORK_WEBHOOK_URL=...
+N8N_CALLBACK_SECRET=...
+```
+
+> **Note:** `upload_max_filesize`, `post_max_size`, `memory_limit`, and `max_execution_time` in your local `php.ini` need to comfortably exceed the 20MB PDF upload limit — base64-encoding a multi-MB PDF for the n8n handoff is memory- and time-intensive. See [docker/php/uploads.ini](docker/php/uploads.ini) for the values used in production.
+
+## Deployment
+
+Ships as a Docker image (see [Dockerfile](Dockerfile)) targeting [Railway](https://railway.app). The image bundles the Noto Khmer font for PDF generation and patches a known mPDF glyph-set crash on first build.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Built on the [MIT-licensed](https://opensource.org/licenses/MIT) Laravel framework.
