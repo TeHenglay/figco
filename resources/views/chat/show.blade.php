@@ -31,7 +31,7 @@
             <!-- Avatar overlapping banner -->
             <div class="flex justify-center -mt-12 mb-3 relative z-10">
                 <div class="relative">
-                    <img src="/images/monika.jpg" alt="Monika"
+                    <img src="/images/monika-logo.png" alt="Monika"
                          class="w-24 h-24 border-4 border-slate-900 object-cover shadow-[5px_5px_0px_0px_rgba(30,41,59,1)]"
                          style="border-radius:50%">
                     <span class="absolute bottom-1 right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full shadow"></span>
@@ -101,7 +101,7 @@
         </a>
         <!-- Avatar with online ring -->
         <div class="relative flex-shrink-0 cursor-pointer group" @click="monikaModal = true">
-            <img src="/images/monika.jpg" alt="Monika"
+            <img src="/images/monika-logo.png" alt="Monika"
                  class="w-14 h-14 border-[3px] border-slate-900 object-cover shadow-[3px_3px_0px_0px_rgba(30,41,59,1)] group-hover:opacity-85 transition-opacity"
                  :class="sussyMode ? 'border-pink-500 shadow-[0_0_12px_rgba(236,72,153,0.5)]' : 'border-slate-900'"
                  style="border-radius:50%">
@@ -136,14 +136,14 @@
         <!-- Monika intro if no messages -->
         @if($messages->count() === 0)
         <div class="flex justify-start gap-3" x-show="!sussyMode">
-            <img src="/images/monika.jpg" alt="Monika" class="w-10 h-10 border-2 border-slate-900 object-cover flex-shrink-0 self-end" style="border-radius:50%">
+            <img src="/images/monika-logo.png" alt="Monika" class="w-10 h-10 border-2 border-slate-900 object-cover flex-shrink-0 self-end" style="border-radius:50%">
             <div class="max-w-[75%] msg-assistant bg-white border-2 border-slate-900 shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] px-4 py-3">
                 <p class="font-technical-xs text-technical-xs text-blue-600 font-bold mb-1 msg-sender">Monika</p>
                 <p class="font-body-md text-body-md text-sm">Hey! I'm Monika, your AI teaching assistant. What can I help you with today?</p>
             </div>
         </div>
         <div class="flex justify-start gap-3" x-show="sussyMode" x-cloak>
-            <img src="/images/monika.jpg" alt="Monika" class="w-10 h-10 border-2 border-pink-500 object-cover flex-shrink-0 self-end shadow-[0_0_8px_rgba(236,72,153,0.5)]" style="border-radius:50%">
+            <img src="/images/monika-logo.png" alt="Monika" class="w-10 h-10 border-2 border-pink-500 object-cover flex-shrink-0 self-end shadow-[0_0_8px_rgba(236,72,153,0.5)]" style="border-radius:50%">
             <div class="max-w-[75%] msg-assistant border-2 px-4 py-3">
                 <p class="font-technical-xs text-technical-xs font-bold mb-1 msg-sender">Monika 😏</p>
                 <p class="font-body-md text-body-md text-sm">Hey babe~ I'm Monika, your AI teaching assistant — but in this mode I'm a little extra 🔥 What do you need today?</p>
@@ -155,7 +155,7 @@
         @foreach($messages as $msg)
             <div class="flex {{ $msg->role === 'user' ? 'justify-end' : 'justify-start' }} gap-3">
                 @if($msg->role === 'assistant')
-                    <img src="/images/monika.jpg" alt="Monika" class="w-10 h-10 border-2 border-slate-900 object-cover flex-shrink-0 self-end" style="border-radius:50%">
+                    <img src="/images/monika-logo.png" alt="Monika" class="w-10 h-10 border-2 border-slate-900 object-cover flex-shrink-0 self-end" style="border-radius:50%">
                 @endif
                 <div class="max-w-[75%] shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] px-4 py-3 border-2
                     {{ $msg->role === 'user' ? 'msg-user bg-blue-600 text-white border-slate-900' : 'msg-assistant bg-white border-slate-900' }}">
@@ -181,7 +181,7 @@
         <template x-for="msg in dynamicMessages" :key="msg.id">
             <div :class="msg.role === 'user' ? 'flex justify-end gap-3' : 'flex justify-start gap-3'">
                 <template x-if="msg.role === 'assistant'">
-                    <img src="/images/monika.jpg" alt="Monika"
+                    <img src="/images/monika-logo.png" alt="Monika"
                          class="w-10 h-10 object-cover flex-shrink-0 self-end border-2 transition-colors"
                          :class="sussyMode ? 'border-pink-500 shadow-[0_0_8px_rgba(236,72,153,0.4)]' : 'border-slate-900'"
                          style="border-radius:50%">
@@ -227,7 +227,7 @@
 
         <!-- Typing indicator -->
         <div x-show="loading" x-cloak class="flex justify-start gap-3">
-            <img src="/images/monika.jpg" alt="Monika"
+            <img src="/images/monika-logo.png" alt="Monika"
                  class="w-10 h-10 object-cover flex-shrink-0 border-2 transition-colors"
                  :class="sussyMode ? 'border-pink-500' : 'border-slate-900'"
                  style="border-radius:50%">

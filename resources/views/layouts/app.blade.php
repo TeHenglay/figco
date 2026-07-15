@@ -158,7 +158,7 @@
     <a href="{{ route('chat.index') }}"
        class="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 bg-blue-600 text-white border-2 border-slate-900 shadow-[6px_6px_0px_0px_rgba(30,41,59,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] transition-all group">
         <div class="relative flex-shrink-0">
-            <img src="/images/monika.jpg" alt="Monika" class="w-9 h-9 object-cover rounded-full border-2 border-white">
+            <img src="/images/monika-logo.png" alt="Monika" class="w-9 h-9 object-cover rounded-full border-2 border-white">
             <span class="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full border-2 border-slate-900 animate-pulse"></span>
         </div>
         <div class="flex flex-col leading-tight">
@@ -189,7 +189,7 @@
     <div id="figco-loading" class="hidden fixed inset-0 z-[9999] flex items-center justify-center" style="background:rgba(15,23,42,0.88);">
         <div class="bg-white border-4 border-slate-900 shadow-[8px_8px_0px_0px_rgba(30,41,59,1)] px-10 py-8 flex flex-col items-center gap-5 sketch-border">
             <div class="relative">
-                <img src="/images/monika.jpg" alt="Monika" class="w-16 h-16 object-cover rounded-full border-2 border-slate-900">
+                <img src="/images/monika-logo.png" alt="Monika" class="w-16 h-16 object-cover rounded-full border-2 border-slate-900">
                 <span class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 border-2 border-slate-900 rounded-full animate-pulse"></span>
             </div>
             <div class="flex gap-2">

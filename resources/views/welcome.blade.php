@@ -159,11 +159,6 @@
             <div class="flex flex-col gap-8 order-2 lg:order-1 relative">
                 <div class="absolute -top-10 -left-10 w-32 h-32 border-4 border-surface-tint rounded-full opacity-20 sketch-border z-[-1]"></div>
 
-                <div class="flex items-center gap-2 w-fit border-2 border-slate-900 bg-yellow-300 px-3 py-1 font-technical-xs text-slate-900 shadow-[4px_4px_0px_0px_rgba(30,41,59,1)] sketch-border">
-                    <span class="material-symbols-outlined text-[16px]">auto_awesome</span>
-                    Powered by Google Gemini AI
-                </div>
-
                 <h1 class="font-headline-xl text-headline-xl text-on-background relative">
                     <span class="relative z-10">Your AI-Powered</span><br/>
                     <span class="relative z-10">Teaching Sidekick.</span>

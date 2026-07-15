@@ -50,7 +50,7 @@ class HomeworkController extends Controller
 
         $callbackUrl = rtrim(config('app.url'), '/') . '/webhook/n8n/homework';
 
-        $n8n->triggerHomework(
+        $started = $n8n->triggerHomework(
             $hw->id,
             $pdfBase64,
             $file->getClientOriginalName(),
@@ -58,6 +58,13 @@ class HomeworkController extends Controller
             $callbackUrl,
             $language
         );
+
+        if (!$started) {
+            $hw->update([
+                'status'        => 'failed',
+                'error_message' => 'Could not reach the homework generator. Please try again.',
+            ]);
+        }
 
         return redirect()->route('homework.show', $hw)->with('info', 'Your homework is being generated...');
     }

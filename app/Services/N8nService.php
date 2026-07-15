@@ -109,16 +109,28 @@ class N8nService
         return (is_string($reply) && trim($reply) !== '') ? trim($reply) : '';
     }
 
-    public function triggerHomework(int $homeworkId, string $pdfBase64, string $filename, string $instructions, string $callbackUrl, string $language = 'English'): void
+    public function triggerHomework(int $homeworkId, string $pdfBase64, string $filename, string $instructions, string $callbackUrl, string $language = 'English'): bool
     {
-        Http::timeout(15)->withoutVerifying()->post(config('services.n8n.homework_webhook_url'), [
-            'homework_id'     => $homeworkId,
-            'pdf_base64'      => $pdfBase64,
-            'filename'        => $filename,
-            'instructions'    => $instructions,
-            'language'        => $language,
-            'callback_url'    => $callbackUrl,
-            'callback_secret' => config('services.n8n.callback_secret'),
-        ]);
+        try {
+            $response = Http::timeout(90)->withoutVerifying()->post(config('services.n8n.homework_webhook_url'), [
+                'homework_id'     => $homeworkId,
+                'pdf_base64'      => $pdfBase64,
+                'filename'        => $filename,
+                'instructions'    => $instructions,
+                'language'        => $language,
+                'callback_url'    => $callbackUrl,
+                'callback_secret' => config('services.n8n.callback_secret'),
+            ]);
+        } catch (\Throwable $e) {
+            Log::error('n8n homework trigger connection error', ['homework_id' => $homeworkId, 'error' => $e->getMessage()]);
+            return false;
+        }
+
+        if ($response->failed()) {
+            Log::error('n8n homework trigger failed', ['homework_id' => $homeworkId, 'status' => $response->status()]);
+            return false;
+        }
+
+        return true;
     }
 }
